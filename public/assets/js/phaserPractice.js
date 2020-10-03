@@ -27,10 +27,19 @@ var config = {
 
 //this will be used as a Physics Group in "create"
 var platforms;
+var bombs;
 var stars;
 var player;
 //used to establish a keyboard connection in "create"
 var cursors;
+
+//holds the score
+var score = 0;
+//the Game Object that displays the score to the player
+var scoreText;
+
+//checks to see if you lost
+var gameOver = false;
 
 //creates an instance of the Game class
 //the "config" object is passed in as a constructor
@@ -44,6 +53,7 @@ function preload ()
     this.load.image('sky', '../assets/img/practice/sky.png');
     this.load.image('ground', '../assets/img/practice/platform.png');
     this.load.image('star', '../assets/img/practice/star.png');
+    this.load.image('sun', '../assets/img/practice/sun.png');
     this.load.image('bomb', '../assets/img/practice/bomb.png');
     //divides up the sprite sheet into the given width and height
     //NOTE: phaser supports flipping sprites
@@ -65,7 +75,7 @@ function create ()
     //load backgrounds first, followed by what goes on top of it
     //"this.add.image" creates a new image Game Object and adds it to the current Scenes display list
     //the scene extends infinitely in all directions, but you can't see it unless it's within the camera
-    this.add.image(400, 300, 'star');
+    this.add.image(700, 50, 'sun').setScale(0.3);
 
     //this.physics means using the "arcade" physics system
     //creates a new Static Physics Group, and assigns it to the local variable "platforms"
@@ -128,12 +138,12 @@ function create ()
     //includes four (4) properties: up, down, left, right
     //each represents an arrow key
     cursors = this.input.keyboard.createCursorKeys();
-
+    
     //check for collisions between the specified objects
     //also works for Group Objects
     //can also invoke callbacks based on the collision
     this.physics.add.collider(player, platforms);
-
+    
     //add the stars for the player to collect
     stars = this.physics.add.group({
         //set default image
@@ -148,19 +158,41 @@ function create ()
         //stepX & stepY tells it how much to change it each iteration
         setXY: { x: 12, y: 0, stepX: 70, stepY: -10 }
     });
-
+    
     //the children group property lets you access members of the group
     //iterate method tells it t go trough each of them, and run the function you put in
     //the "child" parameter gets the current child it's going through
     stars.children.iterate(function (child) {
         //bounces ranges from 0 to 1
+        //FloatBetween gets a random decimal between the two values
         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-
+        
     });
 
+    //create the group for Bombs, which will kill the player
+    bombs = this.physics.add.group();
+
+    //keeps the bombs from falling through the ground
+    this.physics.add.collider(bombs, platforms);
+    //run "hitBomb()" [defined below] when player collides with bomb
+    this.physics.add.collider(player, bombs, hitBomb, null, this);
+
+    //create a text object to display the player's score
+    //16, 16 gives the coordinates of the text
+    //'Score: 0' is the dafault text
+    //the object has the settings for the text
+    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+
+    //have the Player collide with the platforms
     this.physics.add.collider(player, platforms);
+    //have the Stars collide with the platforms
     this.physics.add.collider(stars, platforms);
 
+    //check if the player is overlapping with a Game Object in the "stars" group
+    //if so, run collectStar() [defined below]
+    //"null" is an optional callback function, that runs before collectStar(), and returns a bool
+    //--the first callback will only run if this callback returns true
+    //"this" is the context in which to run the callback. Optional
     this.physics.add.overlap(player, stars, collectStar, null, this);
 }
 
@@ -194,12 +226,72 @@ function update () {
     //checks to see if player is touching anything beneath them before jumping
     if (cursors.up.isDown && player.body.touching.down)
     {
+        //applying negative Y velocity shoots them upward 
         player.setVelocityY(-330);
     }
     //END OF PLAYER MOVEMENT
 }
 
+//runs when the player overlaps with a star
+//takes in the two Game Objects that collided
 function collectStar (player, star)
 {
+    //removes physics from the object
+    //first parameter (optional) calls "disableGameObject"
+    //second parameter (optional) calls "hideGameObject"
+    //--basically, this stops the object from doing anything, even being visible
     star.disableBody(true, true);
+
+    //increments an int. Nothing special here, move along
+    score += 10;
+    //updates the text of the scoreText Game Object with the new score
+    scoreText.setText('Score: ' + score);
+
+    //check the number of Game Object in the "stars" group that are not disabled
+    if (stars.countActive(true) === 0)
+    {
+        //A new batch of stars to collect
+        //takes all the disabled stars, and turns them back on
+        stars.children.iterate(function (child) {
+            //first parameter, tell it to reset the body and place it at the next 2 coordinates
+            //child.x gets the current x position of the Game Object
+            //0 sets it to the top of the screen
+            //final 2 parameters Activate and Show the Game Object
+            child.enableBody(true, child.x, 0, true, true);
+        });
+
+        //checks the position of the player, to make sure the bomb doesn't spawn on top of them
+        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+        //create a bomb Game Object at the the coordiates of the first 2 parameters
+        //the third parameter ('bomb') tells it what sprite to use
+        var bomb = bombs.create(x, 16, 'bomb');
+        //100% ricochet, so it just keeps bouncing
+        bomb.setBounce(1);
+        //make sure it doesn't bounce out of the level
+        bomb.setCollideWorldBounds(true);
+        //grants initial velocity, moving down
+        //moves it left or right in a random direction as well
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        //disables gravity to make sure it never looses momentum
+        bomb.allowGravity = false;
+
+    }
+}
+
+//runs when the player comes in contact with a bomb
+function hitBomb (player, bomb)
+{
+    //stops all physics
+    this.physics.pause();
+
+    //turn the player red
+    player.setTint(0xff0000);
+
+    //trap the player in the "turn" animation
+    //it has a velcity of 0, the player is trapped
+    player.anims.play('turn');
+
+    //set the bool true, but I don't thik it actually gets called
+    gameOver = true;
 }
