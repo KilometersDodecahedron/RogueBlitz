@@ -53,6 +53,7 @@ function preload ()
     this.load.image('sky', '../assets/img/practice/sky.png');
     this.load.image('ground', '../assets/img/practice/platform.png');
     this.load.image('star', '../assets/img/practice/star.png');
+    this.load.image('sun', '../assets/img/practice/sun.png');
     this.load.image('bomb', '../assets/img/practice/bomb.png');
     //divides up the sprite sheet into the given width and height
     //NOTE: phaser supports flipping sprites
@@ -74,7 +75,7 @@ function create ()
     //load backgrounds first, followed by what goes on top of it
     //"this.add.image" creates a new image Game Object and adds it to the current Scenes display list
     //the scene extends infinitely in all directions, but you can't see it unless it's within the camera
-    this.add.image(400, 300, 'star');
+    this.add.image(700, 50, 'sun').setScale(0.3);
 
     //this.physics means using the "arcade" physics system
     //creates a new Static Physics Group, and assigns it to the local variable "platforms"
