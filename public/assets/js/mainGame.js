@@ -1,8 +1,19 @@
-$(document).ready(() => {
-    const theBoard = $("#board");
-    const Tile = require("/classes/tileClass.js");
+import Preloader from "./scenes/Preloader.js";
+import Game from "./scenes/Game.js";
 
-    const gridSideLength = 10;
+const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 560,
+    physics: {
+        default: "arcade",
+        arcade: {
+            //Top-Down game. No Gravity needed
+            gravity: {y: 0},
+            debug: false
+        }
+    },
+    scene: [Preloader, Game]
+}
 
-    console.log(Tile);
-});
+const game = new Phaser.Game(config);

@@ -1,0 +1,195 @@
+{
+	"frames": {
+		"knight-f-hit-anim-f-0.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-idle-anim-f-0.png": {
+			"frame": {
+				"x": 19,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-idle-anim-f-1.png": {
+			"frame": {
+				"x": 37,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-idle-anim-f-2.png": {
+			"frame": {
+				"x": 55,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-idle-anim-f-3.png": {
+			"frame": {
+				"x": 73,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-run-anim-f-0.png": {
+			"frame": {
+				"x": 91,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-run-anim-f-1.png": {
+			"frame": {
+				"x": 109,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-run-anim-f-2.png": {
+			"frame": {
+				"x": 127,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		},
+		"knight-f-run-anim-f-3.png": {
+			"frame": {
+				"x": 145,
+				"y": 1,
+				"w": 16,
+				"h": 28
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 16,
+				"h": 28
+			},
+			"sourceSize": {
+				"w": 16,
+				"h": 28
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 162,
+			"h": 30
+		},
+		"scale": "1"
+	}
+}
