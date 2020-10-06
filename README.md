@@ -4,7 +4,7 @@
 [![visual_studio_code](https://aleen42.github.io/badges/src/visual_studio_code.svg)](https://code.visualstudio.com) 
 
 
-# A Rouge's Story⚔️📒
+# A Rogue's Story⚔️📒
 Welcome all players! Have you ever experienced playing a roguelike videogame? Today's your lucky day, RogueBlitz is an RPG top down combat simulator where you run through the level dodging, destroying, and discovering key items to enhance your gameplay and escape the madness yet to come. Once a level has been beaten, all status, items, and score will carry over to the next level. At the end of your speed run experienced, compare your score against other players in your region and sees who's king of the dungeon.
 
 RogueBlitz Developers built this project for competitive/casual gamers who look for a challenge. Thanks to the Phaser 3 API, (https://phaser.io/phaser3/api) and Tiled Map Editor library to make the level design. After reviewing the rules, users starting point is pre load into a dungeon crawl and creates update on movement of the player. 
