@@ -8,7 +8,10 @@ import { createGoblinAnims } from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
 
 //import enemies
-import Goblin from "../enemies/goblin.js"
+import Goblin from "../enemies/goblin.js";
+
+//import Player
+import Player from "../player/class/playerClass.js";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -47,8 +50,7 @@ export default class Game extends Phaser.Scene {
         //debugDraw.debugDraw(wallsLayer, this);
         
         //add the knight
-        this.knight = this.physics.add.sprite(200, 200, "knight", "knight-f-hit-anim-f-0.png");
-        this.knight.body.setSize(14, 20).setOffset(0, 8);
+        this.knight = this.add.player(this.scene, 200, 200, "knight");
         
         //set camera area
         this.cameras.main.setBounds(0, 0, 800, 560);
@@ -57,8 +59,6 @@ export default class Game extends Phaser.Scene {
         //set camera zoom
         this.cameras.main.setZoom(2.5);
 
-        this.knight.anims.play("knight-idle");
-        
         const goblins = this.physics.add.group({
             classType: Goblin,
             createCallback: (gameObject) => {
@@ -73,46 +73,21 @@ export default class Game extends Phaser.Scene {
 
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
+        this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this);
+    }
+
+    handleEnemyCollisions(player, enemy){
+        let directionX = player.x - enemy.x;
+        let directionY = player.y - enemy.y;
+
+        let directionalVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(enemy.knockBack);
+
+        this.knight.takeDamage(directionalVector, enemy.damage);
     }
 
     update(){
-        //do nothing if can't find controls or player
-        if(!this.cursors || !this.knight){
-            return;
-        }
-
-        //movement speed
-        let speed = 130;
-
-        //stop movement from previous frame
-        this.knight.setVelocity(0, 0);
-
-        //horizontal movement
-        if(this.cursors.left?.isDown){
-            this.knight.setVelocityX(-speed);
-        }else if(this.cursors.right?.isDown){
-            this.knight.setVelocityX(speed);
-        }
-
-        if(this.cursors.up?.isDown){
-            this.knight.setVelocityY(-speed);
-        }else if(this.cursors.down?.isDown){
-            this.knight.setVelocityY(speed);
-        }
-
-        this.knight.body.velocity.normalize().scale(speed);
-
-        //knight animation
-        if(this.cursors.left?.isDown){
-            this.knight.flipX = true;
-            this.knight.anims.play("knight-run", true);
-        }else if(this.cursors.right?.isDown){
-            this.knight.flipX = false;
-            this.knight.anims.play("knight-run", true);
-        }else if(this.cursors.up?.isDown || this.cursors.down?.isDown){
-            this.knight.anims.play("knight-run", true);
-        }else{
-            this.knight.anims.play("knight-idle", true);
+        if(this.knight){
+            this.knight.update(this.cursors);
         }
     }
 }
