@@ -1,16 +1,8 @@
-//returns true or false
-const coinFlip = () => {
-    return 0.5 >= Math.random();
-}
-
 export default class Enemy extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, texture, frame, health, speed){
+    constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         this.health = 10;
         this.speed = 100;
-        //determine movement constraints
-        this.canBeStill = true;
-        this.canMoveDiagonally =false;
 
         this.directionTracker = {
             up: false,
@@ -18,6 +10,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
             right: false,
             left: false
         }
+    }
+
+    //returns true or false. Used in random functions
+    coinFlip(){
+        return 0.5 >= Math.random();
     }
 
     takeDamage(damage){
@@ -30,65 +27,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     defeated(){
         //TODO
-    }
-
-    //set their movement them in a random direction
-    //
-    setMovementInRandomDirection(){
-        //set random movement
-        if(this.canMoveDiagonally){
-            this.directionTracker.up = coinFlip();
-            this.directionTracker.down = coinFlip();
-            this.directionTracker.right = coinFlip();
-            this.directionTracker.left = coinFlip();
-        //if they can't move diagonally
-        }else{
-            if(coinFlip()){
-                this.directionTracker.up = false;
-                this.directionTracker.down = false;
-                this.directionTracker.right = coinFlip();
-                this.directionTracker.left = coinFlip();
-            }else{
-                this.directionTracker.up = coinFlip();
-                this.directionTracker.down = coinFlip();
-                this.directionTracker.right = false;
-                this.directionTracker.left = false;
-            }
-        }
-
-        //prevent conflicting movement instructions
-        if(this.directionTracker.up && this.directionTracker.down){
-            coinFlip() ? this.directionTracker.up = false : this.directionTracker.down = false;
-        }
-        if(this.directionTracker.right && this.directionTracker.left){
-            coinFlip() ? this.directionTracker.right = false : this.directionTracker.left = false;
-        }
-
-        //force it move in a random direction if it's not allowed to stay still
-        if(!this.canBeStill && 
-            !this.directionTracker.up &&
-            !this.directionTracker.down &&
-            !this.directionTracker.right &&
-            !this.directionTracker.left){
-            if(this.canMoveDiagonally){
-                this.directionTracker.up = coinFlip();
-                this.directionTracker.down = !this.directionTracker.up;
-                this.directionTracker.right = coinFlip();
-                this.directionTracker.left = !this.directionTracker.right;
-            }else{
-                if(coinFlip()){
-                    this.directionTracker.up = false;
-                    this.directionTracker.down = false;
-                    this.directionTracker.right = coinFlip();
-                    this.directionTracker.left = !this.directionTracker.right;
-                }else{
-                    this.directionTracker.up = coinFlip();
-                    this.directionTracker.down = !this.directionTracker.up;
-                    this.directionTracker.right = false;
-                    this.directionTracker.left = false;
-                }
-            }
-        }
     }
 
     //call on preUpdate
