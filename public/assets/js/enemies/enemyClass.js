@@ -2,7 +2,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         this.health = 10;
+        this.damage = 1;
         this.speed = 100;
+
+        //how far to knock back the player when they collide
+        this.knockBack = 200;
 
         this.directionTracker = {
             up: false,
@@ -57,6 +61,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.anims.play(idleAnimName, true);
         }
 
-        this.body.velocity.normalize().scale(this.speed)
+        this.body.velocity.normalize().scale(this.speed);
     }
 }

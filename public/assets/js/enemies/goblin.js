@@ -4,18 +4,15 @@ export default class Goblin extends RandomlyMovingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.health = 5;
-        this.speed = 130;
+        this.damage = 1;
+        this.speed = 50;
+        this.knockBack = 240;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
 
         this.descendantStartMethod();
-    }
-
-    create(){
-        this.descendantStartMethod();
-        console.log("Hello World");
     }
 
     //time = time sinces start, deltaTime = time since last frame update
