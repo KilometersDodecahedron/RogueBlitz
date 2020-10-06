@@ -10,7 +10,7 @@ const config = {
         arcade: {
             //Top-Down game. No Gravity needed
             gravity: {y: 0},
-            debug: false
+            debug: true
         }
     },
     scene: [Preloader, Game]
