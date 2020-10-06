@@ -1,5 +1,15 @@
 //you're getting Phaser from the cdn
 
+//used to test collision boundaries
+import debugDraw from "../utils/debug.js";
+
+//import animations stored in separate files
+import { createGoblinAnims } from "../anims/enemyAnims.js";
+import { createPlayerAnims } from "../anims/playerAnims.js";
+
+//import enemies
+import Goblin from "../enemies/goblin.js"
+
 export default class Game extends Phaser.Scene {
     constructor() {
         super("game");
@@ -15,8 +25,13 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        //add animations
+        createPlayerAnims(this.anims);
+        createGoblinAnims(this.anims);
+
         const map = this.make.tilemap({key: 'dungeon'});
-        const tileset = map.addTilesetImage("dungeonPack", 'tiles');
+        //extra numbers are because tileset was "extruded" tile-extruder too make them fit together better
+        const tileset = map.addTilesetImage("dungeonPack", 'tiles', 16, 16, 1, 2);
 
         
         //create the floor
@@ -27,7 +42,9 @@ export default class Game extends Phaser.Scene {
         
         //give walls collision
         wallsLayer.setCollisionByProperty({collides: true});
-        console.log(wallsLayer);
+
+        //FOR DEBUGGING
+        //debugDraw.debugDraw(wallsLayer, this);
         
         //add the knight
         this.knight = this.physics.add.sprite(200, 200, "knight", "knight-f-hit-anim-f-0.png");
@@ -40,35 +57,22 @@ export default class Game extends Phaser.Scene {
         //set camera zoom
         this.cameras.main.setZoom(2.5);
 
-        //
-        this.anims.create({
-            key: "knight-hit",
-            frames: [{key: "knight", frame: "knight-f-hit-anim-f-0.png"}]
-        })
-
-        this.anims.create({
-            key: "knight-idle",
-            frames: [{key: "knight", frame: "knight-f-idle-anim-f-0.png"},
-                {key: "knight", frame: "knight-f-idle-anim-f-1.png"},
-                {key: "knight", frame: "knight-f-idle-anim-f-2.png"},
-                {key: "knight", frame: "knight-f-idle-anim-f-3.png"}],
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: "knight-run",
-            frames: [{key: 'knight', frame: "knight-f-run-anim-f-0.png"},
-                {key: 'knight', frame: "knight-f-run-anim-f-1.png"},
-                {key: 'knight', frame: "knight-f-run-anim-f-2.png"},
-                {key: 'knight', frame: "knight-f-run-anim-f-3.png"}],
-            frameRate: 12,
-            repeat: -1
-        })
-
         this.knight.anims.play("knight-idle");
+        
+        const goblins = this.physics.add.group({
+            classType: Goblin,
+            createCallback: (gameObject) => {
+                //set their hit boxes correctly
+                gameObject.body.setSize(10, 10).setOffset(4, 5);
+                //have them create an event when they come in collide with something 
+                gameObject.body.onCollide = true;
+            }
+        });
+        
+        goblins.get(125, 125, "goblin");
 
         this.physics.add.collider(this.knight, wallsLayer);
+        this.physics.add.collider(goblins, wallsLayer);
     }
 
     update(){
