@@ -47,7 +47,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
 
     managePlayerMovement(cursors){
          //do nothing if can't find controls or player
-         if(!cursors || this.takenDamageState){
+            if(!cursors || this.takenDamageState){
             return;
         }
 
