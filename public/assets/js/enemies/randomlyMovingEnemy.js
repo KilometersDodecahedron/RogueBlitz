@@ -34,7 +34,7 @@ export default class RandomlyMovingEnemy extends Enemy{
     //run this at the end of the constructor of a descendant class
     descendantStartMethod(){
         //start them moving, if they move from start
-        //NOTE calling this here instead of the parent class to make sure it uses the movesFromTheStart of the 
+        //NOTE calling this here instead of the parent class to make sure it uses the movesFromTheStart of the descendant
         if(this.movesFromTheStart){
             this.setMovementInRandomDirection();
         }

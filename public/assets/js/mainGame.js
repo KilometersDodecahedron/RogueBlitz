@@ -1,5 +1,6 @@
 import Preloader from "./scenes/Preloader.js";
 import Game from "./scenes/Game.js";
+import GameUI from "./scenes/GameUI.js";
 
 const config = {
     type: Phaser.AUTO,
@@ -13,7 +14,7 @@ const config = {
             debug: true
         }
     },
-    scene: [Preloader, Game]
+    scene: [Preloader, Game, GameUI]
 }
 
 const game = new Phaser.Game(config);

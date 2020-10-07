@@ -11,7 +11,11 @@ import { createPlayerAnims } from "../anims/playerAnims.js";
 import Goblin from "../enemies/goblin.js";
 
 //import Player
-import Player from "../player/class/playerClass.js";
+import "../player/class/playerClass.js";
+
+//events
+import { sceneEvents } from "../events/eventCenter.js";
+import { eventNames } from "../events/eventNames.js";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -20,6 +24,8 @@ export default class Game extends Phaser.Scene {
         this.knight = undefined;
         //arrow keys and space bar get stored in here
         this.cursors = undefined;
+        //store refernce to the collider so it can be deleted when player dies
+        this.playerEnemyCollisionArray = [];
     }
 
     preload() {
@@ -28,6 +34,9 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        //add health bar
+        this.scene.run('game-ui');
+
         //add animations
         createPlayerAnims(this.anims);
         createGoblinAnims(this.anims);
@@ -73,9 +82,12 @@ export default class Game extends Phaser.Scene {
 
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
-        this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this);
+        
+        //stores all the enemy collisions in an array, to be deleted when the player dies
+        this.playerEnemyCollisionArray.push(this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this));
     }
 
+    //for when the player collides with an enemy
     handleEnemyCollisions(player, enemy){
         let directionX = player.x - enemy.x;
         let directionY = player.y - enemy.y;
@@ -83,6 +95,13 @@ export default class Game extends Phaser.Scene {
         let directionalVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(enemy.knockBack);
 
         this.knight.takeDamage(directionalVector, enemy.damage);
+
+        sceneEvents.emit(eventNames.playerHealthChanged, this.knight.health);
+
+        //stops
+        if(player.health <= 0){
+            this.playerEnemyCollisionArray = [];
+        }
     }
 
     update(){
