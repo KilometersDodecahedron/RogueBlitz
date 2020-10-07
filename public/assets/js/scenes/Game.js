@@ -72,7 +72,7 @@ export default class Game extends Phaser.Scene {
         //have it follow the knight
         this.cameras.main.startFollow(this.knight, true, 1, 1, 0, 0);
         //set camera zoom
-        this.cameras.main.setZoom(1);
+        this.cameras.main.setZoom(2.5);
 
         const goblins = this.physics.add.group({
             classType: Goblin,
