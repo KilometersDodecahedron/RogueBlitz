@@ -9,7 +9,7 @@ export default class Demon extends RandomlyMovingEnemy {
         this.knockBack = 500;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
-        this.canBeStill = true;
+        this.canBeStill = false;
         this.canMoveDiagonally = true;
 
         this.descendantStartMethod();

@@ -46,10 +46,27 @@ const createDemonAnims = anims => {
     });
 }
 
+const createNecromancerAnims = anims => {
+    anims.create({
+        key: "necromancer-idle",
+        frames: anims.generateFrameNames("necromancer", {start: 0, end: 3, prefix: "necromancer_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "necromancer-run",
+        frames: anims.generateFrameNames("necromancer", {start: 0, end: 3, prefix: "necromancer_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
 
 
 export {
     createGoblinAnims,
     createOgreAnims,
-    createDemonAnims
+    createDemonAnims,
+    createNecromancerAnims
 }

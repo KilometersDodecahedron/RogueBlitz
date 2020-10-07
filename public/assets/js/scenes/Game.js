@@ -4,13 +4,14 @@
 import debugDraw from "../utils/debug.js";
 
 //import animations stored in separate files
-import { createGoblinAnims, createOgreAnims, createDemonAnims} from "../anims/enemyAnims.js";
+import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims} from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
 
 //import enemies
 import Goblin from "../enemies/goblin.js";
 import Ogre from "../enemies/ogre.js";
 import Demon from "../enemies/demon.js";
+import Necromancer from "../enemies/necromancer.js";
 
 //import Player
 import Player from "../player/class/playerClass.js";
@@ -35,6 +36,7 @@ export default class Game extends Phaser.Scene {
         createGoblinAnims(this.anims);
         createOgreAnims(this.anims);
         createDemonAnims(this.anims);
+        createNecromancerAnims(this.anims);
 
         const map = this.make.tilemap({key: 'dungeon'});
         //extra numbers are because tileset was "extruded" tile-extruder too make them fit together better
@@ -93,19 +95,32 @@ export default class Game extends Phaser.Scene {
             }
         });
 
+        const necromancers = this.physics.add.group({
+            classType: Necromancer,
+            createCallback: (gameObject) => {
+                //set their hit boxes correctly
+                gameObject.body.setSize(13, 20).setOffset(2, 5);
+                //have them create an event when they come in collide with something 
+                gameObject.body.onCollide = true;
+            }
+        });
+
         
         goblins.get(125, 125, "goblin");
         ogres.get(400, 350, "ogre");
-        demons.get(300, 450, "ogre");
+        demons.get(300, 450, "demon");
+        necromancers.get(250, 350, "necromancer");
 
 
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
         this.physics.add.collider(ogres, wallsLayer);
         this.physics.add.collider(demons, wallsLayer);
+        this.physics.add.collider(necromancers, wallsLayer);
         this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this);
         this.physics.add.collider(ogres, this.knight, this.handleEnemyCollisions, undefined, this);
         this.physics.add.collider(demons, this.knight, this.handleEnemyCollisions, undefined, this);
+        this.physics.add.collider(necromancers, this.knight, this.handleEnemyCollisions, undefined, this);
     }
 
     handleEnemyCollisions(player, enemy){
