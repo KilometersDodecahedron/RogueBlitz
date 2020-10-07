@@ -3,6 +3,30 @@
     box-sizing: border-box;
 }
 
+body {
+    color: #ffffff;
+    background-image: linear-gradient(43deg, #da0505 0%, #000000 56%, #ff0306 100%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: 'Times New Roman', Times, serif
+}
+.jumbotron {
+    background-image: url("../img/pics/backround.gif");
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    border-color: bisque;
+    min-height: 704px;
+    
+   
+}
+
+h1 {
+float: inline-end;
+
+}
 /* creating css variables to organize everything */
 :root {
     --cell-size: 70px;
@@ -13,3 +37,4 @@
     --character-size: calc(var(--cell-size) * 0.9);
     --item-size: calc(var(--cell-size) * 0.7);
 }
+
