@@ -67,6 +67,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         //the tobstone sprite is larger, so shrink it
         this.setScale(0.09, 0.09);
         this.anims.play("tombstone");
+        //prevent collisions when the character dies
+        this.body.destroy();
         this.isDead = true;
     }
 
