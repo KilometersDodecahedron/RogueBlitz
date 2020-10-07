@@ -13,6 +13,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         //used for invincibility frames and knockback
         this.takenDamageState = false;
         this.damageTime = 0;
+        this.isDead = false;
     }
 
     preUpdate(time, deltaTime){
@@ -33,8 +34,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     takeDamage(direction, damage){
+        //stop running takeDamage if already dead
+        if(this.health <= 0){
+            return;
+        }
+
         //make sure you won't take damage during knockback
         if(!this.takenDamageState){
+            this.health -= damage;
+            this.anims.play("knight-hit", true);
+
+            //if you're dead, don't bother with knockback
+            if(this.health <= 0){
+                this.die();
+                return;
+            }
+
             //change color
             this.setTint(0xff0000);
                     
@@ -45,9 +60,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
+    die(){
+        this.setVelocity(0, 0);
+        //make sure tombstone is facing the right way
+        this.flipX = false;
+        //the tobstone sprite is larger, so shrink it
+        this.setScale(0.09, 0.09);
+        this.anims.play("tombstone");
+        this.isDead = true;
+    }
+
     managePlayerMovement(cursors){
          //do nothing if can't find controls or player
-            if(!cursors || this.takenDamageState){
+         if(!cursors || this.takenDamageState || this.isDead){
             return;
         }
 
