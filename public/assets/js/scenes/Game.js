@@ -167,11 +167,6 @@ export default class Game extends Phaser.Scene {
         this.knight.takeDamage(directionalVector, enemy.damage);
 
         sceneEvents.emit(eventNames.playerHealthChanged, this.knight.health);
-
-        //stops
-        if(player.health <= 0){
-            this.playerEnemyCollisionArray = [];
-        }
     }
 
     update(){
