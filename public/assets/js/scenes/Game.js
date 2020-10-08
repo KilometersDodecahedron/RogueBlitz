@@ -36,6 +36,23 @@ export default class Game extends Phaser.Scene {
         this.minimumSpawnDistance = 80;
         //track the player's score
         this.score = 0;
+        //how many points you need before stronger enemies spawn
+        this.enemyStrengthScoreThreshold = [100, 300, 700, 1500, 3000];
+        //these 3 variables manage enemy spawning
+        this.spawningThreshold = 40000;
+        this.enemyDeathTimerReduction = 5000;
+        this.currentSpawingTimer = 0;
+        //how many enemies spawn each time
+        this.enemiesInWave = 4;
+        //store group objects for enemies in here
+        //the tier says how strong they are
+        //they store OBJECTS, 3 properties, first is the group, second the name, third is the SPAWNING POINT TYPE
+        this.enemiesTierOne = [];
+        this.enemiesTierTwo = [];
+        this.enemiesTierThree = [];
+        this.enemiesTierFour = [];
+        this.enemiesTierFive = [];
+        this.enemiesTierSix = [];
     }
 
     preload() {
@@ -73,9 +90,6 @@ export default class Game extends Phaser.Scene {
         //get enemy spawn points
         const solidEnemySpawnPoints = map.getObjectLayer("Solid Enemies");
         const phasingEnemySpawnPoints = map.getObjectLayer("Phasing Enemies");
-        console.log(phasingEnemySpawnPoints.objects[0]);
-
-        console.log(this.randomArrayShuffle(phasingEnemySpawnPoints.objects)[0]);
 
         //FOR DEBUGGING
         //debugDraw.debugDraw(wallsLayer, this);
@@ -107,6 +121,8 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+        this.enemiesTierOne.push({group: goblins, name: "goblin", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierTwo.push({group: goblins, name: "goblin", spawnLayer: solidEnemySpawnPoints});
 
         const ogres = this.physics.add.group({
             classType: Ogre,
@@ -117,6 +133,9 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+        this.enemiesTierThree.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFour.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFive.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
 
         const demons = this.physics.add.group({
             classType: Demon,
@@ -127,6 +146,10 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+        this.enemiesTierOne.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierTwo.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierThree.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFour.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
 
         const necromancers = this.physics.add.group({
             classType: Necromancer,
@@ -137,6 +160,7 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+        this.enemiesTierSix.push({group: necromancers, name: "necromancer", spawnLayer: solidEnemySpawnPoints});
 
         const oozeSwampy = this.physics.add.group({
             classType: OozeSwampy,
@@ -146,6 +170,9 @@ export default class Game extends Phaser.Scene {
                 gameObject.setPlayer(this.knight);
             }
         })
+        this.enemiesTierFour.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
+        this.enemiesTierFive.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
+        this.enemiesTierSix.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
 
         const oozeMuddy = this.physics.add.group({
             classType: OozeMuddy,
@@ -156,6 +183,8 @@ export default class Game extends Phaser.Scene {
                 gameObject.callbackColorChange();
             }
         })
+        this.enemiesTierFive.push({group: oozeMuddy, name: "ooze-muddy", spawnLayer: phasingEnemySpawnPoints});
+        this.enemiesTierSix.push({group: oozeMuddy, name: "ooze-muddy", spawnLayer: phasingEnemySpawnPoints});
 
         //update score when enemy is defeated
         sceneEvents.on(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
@@ -171,10 +200,10 @@ export default class Game extends Phaser.Scene {
         // oozeSwampy.get(100, 100, "ooze-swampy");
         // oozeMuddy.get(500, 100, "ooze-muddy");
 
-        for(let i = 0; i < 6; i++){
-            this.spawnInRandomPosition(goblins, "goblin", solidEnemySpawnPoints);
-        }
-        
+        // for(let i = 0; i < 6; i++){
+        //     this.spawnInRandomPosition(goblins, "goblin", solidEnemySpawnPoints);
+        // }
+
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
         this.physics.add.collider(ogres, wallsLayer);
@@ -198,6 +227,8 @@ export default class Game extends Phaser.Scene {
         this.playerEnemyCollisionArray.push(this.physics.add.collider(necromancers, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeSwampy, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeMuddy, this.knight, this.handleEnemyCollisions, undefined, this));
+
+        this.spawnNewSetOfEnemies();
     }
 
     handleProjectileHit(projectile, enemy){
@@ -205,8 +236,6 @@ export default class Game extends Phaser.Scene {
         let directionY = this.knight.y - enemy.y;
 
         let directionalVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(-projectile.knockback);
-
-        console.log(directionalVector);
 
         enemy.takeDamage(projectile.damage, directionalVector);
         projectile.destroy();
@@ -236,7 +265,35 @@ export default class Game extends Phaser.Scene {
     //called as an event
     handleEnemyDefeated(points){
         this.score += points;
+        this.currentSpawingTimer += this.enemyDeathTimerReduction;
         sceneEvents.emit(eventNames.scoreUpdated, this.score)
+    }
+
+    spawnNewSetOfEnemies(){
+        //store array of the current 
+        var selectedEnemyArray;
+        //pick which enemy array to use
+        if(this.score < this.enemyStrengthScoreThreshold[0]){
+            selectedEnemyArray = this.enemiesTierOne;
+        }else if(this.score < this.enemyStrengthScoreThreshold[1]){
+            selectedEnemyArray = this.enemiesTierTwo;
+        }else if(this.score < this.enemyStrengthScoreThreshold[2]){
+            selectedEnemyArray = this.enemiesTierThree;
+        }else if(this.score < this.enemyStrengthScoreThreshold[3]){
+            selectedEnemyArray = this.enemiesTierFour;
+        }else if(this.score < this.enemyStrengthScoreThreshold[4]){
+            selectedEnemyArray = this.enemiesTierFive;
+        }else{
+            selectedEnemyArray = this.enemiesTierSix;
+        }
+        
+        //spawn an enemy for each it tells you to
+        for(let i = 0; i < this.enemiesInWave; i++){
+            selectedEnemyArray = this.randomArrayShuffle(selectedEnemyArray);
+            this.spawnInRandomPosition(selectedEnemyArray[0].group, selectedEnemyArray[0].name, selectedEnemyArray[0].spawnLayer);
+        }
+
+        this.currentSpawingTimer = 0;
     }
 
     //get the position to spawn
@@ -249,7 +306,6 @@ export default class Game extends Phaser.Scene {
             let distance = Phaser.Math.Distance.Between(shuffledArray[i].x, shuffledArray[i].y, this.knight.x, this.knight.y);
             if(distance >= this.minimumSpawnDistance){
                 this.spawnEnemy(enemyType, enemyName, shuffledArray[i]);
-                console.log(distance);
                 break;
             }
         }
@@ -275,9 +331,16 @@ export default class Game extends Phaser.Scene {
         return array;
     }
 
-    update(){
+    update(time, deltaTime){
         if(this.knight){
             this.knight.update(this.cursors);
+        }
+
+        if(!this.knight.isDead){
+            this.currentSpawingTimer += deltaTime;
+            if(this.currentSpawingTimer >= this.spawningThreshold){
+                this.spawnNewSetOfEnemies();
+            }
         }
     }
 }
