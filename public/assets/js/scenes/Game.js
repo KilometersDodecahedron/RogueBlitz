@@ -34,6 +34,8 @@ export default class Game extends Phaser.Scene {
         this.playerEnemyCollisionArray = [];
         //make sure enemies don't spawn on top of player
         this.minimumSpawnDistance = 80;
+        //track the player's score
+        this.score = 0;
     }
 
     preload() {
@@ -155,6 +157,13 @@ export default class Game extends Phaser.Scene {
             }
         })
 
+        //update score when enemy is defeated
+        sceneEvents.on(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
+
+        this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+            sceneEvents.off(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
+        })
+
         // goblins.get(125, 125, "goblin");
         // ogres.get(400, 350, "ogre");
         // demons.get(300, 450, "demon");
@@ -222,6 +231,12 @@ export default class Game extends Phaser.Scene {
         if(player.health <= 0){
             this.playerEnemyCollisionArray = [];
         }
+    }
+
+    //called as an event
+    handleEnemyDefeated(points){
+        this.score += points;
+        sceneEvents.emit(eventNames.scoreUpdated, this.score)
     }
 
     //get the position to spawn

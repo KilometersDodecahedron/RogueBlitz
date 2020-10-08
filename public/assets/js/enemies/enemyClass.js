@@ -1,3 +1,6 @@
+import { sceneEvents } from "../events/eventCenter.js";
+import { eventNames } from "../events/eventNames.js";
+
 export default class Enemy extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
@@ -70,6 +73,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     defeated(){
         //TODO
+        sceneEvents.emit(eventNames.enemyDefeated, this.pointValue);
         this.destroy();
     }
 

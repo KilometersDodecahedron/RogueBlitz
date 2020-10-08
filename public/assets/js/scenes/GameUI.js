@@ -8,10 +8,14 @@ export default class GameUI extends Phaser.Scene {
         super("game-ui");
 
         this.numberOfHearts = 3
-        this.hearts
+        this.hearts;
+        this.scoreDisplay;
     }
 
     create(){
+        this.scoreDisplay = this.add.text(5, 40, "Score: 0");
+
+        //group object for the heath hearts
         this.hearts = this.add.group({
             classType: Phaser.GameObjects.Image
         });
@@ -34,9 +38,11 @@ export default class GameUI extends Phaser.Scene {
 
         //checks for the playerHealthChanged event, and updates the ui
         sceneEvents.on(eventNames.playerHealthChanged, this.handlePlayerHealthChanged, this);
+        sceneEvents.on(eventNames.scoreUpdated, this.handlePlayerScoreChanged, this);
 
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
             sceneEvents.off(eventNames.playerHealthChanged, this.handlePlayerHealthChanged, this);
+            sceneEvents.off(eventNames.scoreUpdated, this.handlePlayerScoreChanged, this);
         })
     }
 
@@ -53,5 +59,9 @@ export default class GameUI extends Phaser.Scene {
                 gameObject.setTexture("ui-heart-empty")
             }
         });
+    }
+
+    handlePlayerScoreChanged(score){
+        this.scoreDisplay.text = "Score: " + score;
     }
 }
