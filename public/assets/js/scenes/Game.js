@@ -4,7 +4,7 @@
 import debugDraw from "../utils/debug.js";
 
 //import animations stored in separate files
-import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims} from "../anims/enemyAnims.js";
+import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims} from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
 
 //import enemies
@@ -12,7 +12,8 @@ import Goblin from "../enemies/goblin.js";
 import Ogre from "../enemies/ogre.js";
 import Demon from "../enemies/demon.js";
 import Necromancer from "../enemies/necromancer.js";
-import OozeSwampy from "../enemies/oozeSwampy.js"
+import OozeSwampy from "../enemies/oozeSwampy.js";
+import OozeMuddy from "../enemies/oozeMuddy.js";
 
 //import Player
 import "../player/class/playerClass.js";
@@ -31,6 +32,8 @@ export default class Game extends Phaser.Scene {
         this.cursors = undefined;
         //store refernce to the collider so it can be deleted when player dies
         this.playerEnemyCollisionArray = [];
+        //make sure enemies don't spawn on top of player
+        this.minimumSpawnDistance = 80;
     }
 
     preload() {
@@ -49,6 +52,7 @@ export default class Game extends Phaser.Scene {
         createDemonAnims(this.anims);
         createNecromancerAnims(this.anims);
         createOozeSwampyAnims(this.anims);
+        createOozeMuddyAnims(this.anims);
 
         const map = this.make.tilemap({key: 'dungeon'});
         //extra numbers are because tileset was "extruded" tile-extruder too make them fit together better
@@ -63,6 +67,13 @@ export default class Game extends Phaser.Scene {
         
         //give walls collision
         wallsLayer.setCollisionByProperty({collides: true});
+
+        //get enemy spawn points
+        const solidEnemySpawnPoints = map.getObjectLayer("Solid Enemies");
+        const phasingEnemySpawnPoints = map.getObjectLayer("Phasing Enemies");
+        console.log(phasingEnemySpawnPoints.objects[0]);
+
+        console.log(this.randomArrayShuffle(phasingEnemySpawnPoints.objects)[0]);
 
         //FOR DEBUGGING
         //debugDraw.debugDraw(wallsLayer, this);
@@ -125,20 +136,36 @@ export default class Game extends Phaser.Scene {
             }
         });
 
-        const oozeSwamp = this.physics.add.group({
+        const oozeSwampy = this.physics.add.group({
             classType: OozeSwampy,
             createCallback: (gameObject) => {
+                gameObject.body.collideWorldBounds=true;
                 gameObject.body.onCollide = true;
                 gameObject.setPlayer(this.knight);
             }
         })
 
-        goblins.get(125, 125, "goblin");
-        ogres.get(400, 350, "ogre");
-        demons.get(300, 450, "demon");
-        necromancers.get(250, 350, "necromancer");
-        oozeSwamp.get(100, 100, "ooze-swampy");
+        const oozeMuddy = this.physics.add.group({
+            classType: OozeMuddy,
+            createCallback: (gameObject) => {
+                gameObject.body.collideWorldBounds=true;
+                gameObject.body.onCollide = true;
+                gameObject.setPlayer(this.knight);
+                gameObject.callbackColorChange();
+            }
+        })
 
+        // goblins.get(125, 125, "goblin");
+        // ogres.get(400, 350, "ogre");
+        // demons.get(300, 450, "demon");
+        // necromancers.get(250, 350, "necromancer");
+        // oozeSwampy.get(100, 100, "ooze-swampy");
+        // oozeMuddy.get(500, 100, "ooze-muddy");
+
+        for(let i = 0; i < 6; i++){
+            this.spawnInRandomPosition(goblins, "goblin", solidEnemySpawnPoints);
+        }
+        
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
         this.physics.add.collider(ogres, wallsLayer);
@@ -152,14 +179,16 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(knives, ogres, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, demons, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, necromancers, this.handleProjectileHit, undefined, this);
-        this.physics.add.collider(knives, oozeSwamp, this.handleProjectileHit, undefined, this);
+        this.physics.add.collider(knives, oozeSwampy, this.handleProjectileHit, undefined, this);
+        this.physics.add.collider(knives, oozeMuddy, this.handleProjectileHit, undefined, this);
 
         //stores all the enemy collisions in an array, to be deleted when the player dies
         this.playerEnemyCollisionArray.push(this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(ogres, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(demons, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(necromancers, this.knight, this.handleEnemyCollisions, undefined, this));
-        this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeSwamp, this.knight, this.handleEnemyCollisions, undefined, this));
+        this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeSwampy, this.knight, this.handleEnemyCollisions, undefined, this));
+        this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeMuddy, this.knight, this.handleEnemyCollisions, undefined, this));
     }
 
     handleProjectileHit(projectile, enemy){
@@ -193,6 +222,42 @@ export default class Game extends Phaser.Scene {
         if(player.health <= 0){
             this.playerEnemyCollisionArray = [];
         }
+    }
+
+    //get the position to spawn
+    spawnInRandomPosition(enemyType, enemyName, positionObjectLayer){
+        //randomize order
+        const shuffledArray = this.randomArrayShuffle(positionObjectLayer.objects);
+
+        //check spawn point is far enough from player
+        for(let i = 0; i < shuffledArray.length; i++){
+            let distance = Phaser.Math.Distance.Between(shuffledArray[i].x, shuffledArray[i].y, this.knight.x, this.knight.y);
+            if(distance >= this.minimumSpawnDistance){
+                this.spawnEnemy(enemyType, enemyName, shuffledArray[i]);
+                console.log(distance);
+                break;
+            }
+        }
+    }
+
+    //spawns an enemy
+    spawnEnemy(enemyType, enemyName, enemySpawnPositionObject){
+        //enemySpawnPositionObject is offset by half the height and width to accomidate for Tiled positioning issues
+        let newEnemy = enemyType.get(enemySpawnPositionObject.x + (enemySpawnPositionObject.width * 0.5), 
+            enemySpawnPositionObject.y - (enemySpawnPositionObject.height * 0.5), enemyName);
+    }
+
+    //used to help randomize spawn areas
+    randomArrayShuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
     }
 
     update(){

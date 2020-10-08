@@ -1,0 +1,183 @@
+{
+	"frames": [
+		{
+			"filename": "energy-ball-1.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-2.png",
+			"frame": {
+				"x": 195,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-3.png",
+			"frame": {
+				"x": 389,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-4.png",
+			"frame": {
+				"x": 583,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-5.png",
+			"frame": {
+				"x": 777,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-6.png",
+			"frame": {
+				"x": 971,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-7.png",
+			"frame": {
+				"x": 1165,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		},
+		{
+			"filename": "energy-ball-8.png",
+			"frame": {
+				"x": 1359,
+				"y": 1,
+				"w": 192,
+				"h": 192
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 192,
+				"h": 192
+			},
+			"sourceSize": {
+				"w": 192,
+				"h": 192
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 1552,
+			"h": 194
+		},
+		"scale": "1"
+	}
+}
