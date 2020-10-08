@@ -13,21 +13,23 @@ export default class GameUI extends Phaser.Scene {
 
     create(){
         this.hearts = this.add.group({
-            classType: Phaser.GameObjects.Image,
-            createCallback: (gameObject) => {
-                //TODO find way to make hearts bigger
-            }
+            classType: Phaser.GameObjects.Image
         });
 
         //puts the hearts at the top of the screen
         this.hearts.createMultiple({
             key: "ui-heart-full",
             setXY: {
-                x: 10,
-                y: 10,
-                stepX: 16
+                x: 20,
+                y: 20,
+                stepX: 32
             },
             quantity: this.numberOfHearts
+        });
+
+        //make the hearts bigger
+        this.hearts.children.iterate(child => {
+            child.setScale(2, 2);
         });
 
         //checks for the playerHealthChanged event, and updates the ui

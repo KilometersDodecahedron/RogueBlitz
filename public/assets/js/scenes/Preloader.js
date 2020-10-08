@@ -10,7 +10,10 @@ export default class Preloader extends Phaser.Scene {
 
         //the player
         this.load.atlas("knight", "../assets/img/player/knight.png", "../assets/json/player/knight.json");
-        this.load.image("tombstone", "../assets/img/player/tombstone.png")
+        this.load.image("tombstone", "../assets/img/player/tombstone.png");
+
+        //weapons
+        this.load.image("knife", "../assets/img/player/weapons/weapon_knife.png")
 
         //enemies
         this.load.atlas("goblin", "../assets/img/enemies/goblin.png", "../assets/json/enemies/goblin.json");

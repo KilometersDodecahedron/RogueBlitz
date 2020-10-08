@@ -5,6 +5,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.damage = 1;
         this.speed = 100;
 
+        this.takenDamageState = false;
+        this.damageTime = 0;
+
         //how far to knock back the player when they collide
         this.knockBack = 200;
 
@@ -16,25 +19,58 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
+    preUpdate(time, deltaTime){
+        super.preUpdate(time, deltaTime);
+        if(this.takenDamageState){
+            this.damageTime += deltaTime;
+            // knockback period in milliseconds
+            if(this.damageTime >= 200){
+                this.takenDamageState = false;
+                this.setTint(0xffffff);
+                this.damageTime = 0;
+            }
+        }
+    }
+
     //returns true or false. Used in random functions
     coinFlip(){
         return 0.5 >= Math.random();
     }
 
-    takeDamage(damage){
+    takeDamage(damage, direction){
+        if(this.takenDamageState){
+            return;
+        }
+
         this.health -= damage;
+        console.log(this.health);
 
         if(this.health <= 0){
-            defeated();
+            this.defeated();
+            return;
         }
+        
+        //change color
+        this.setTint(0xff0000);
+                    
+        //knockback
+        this.setVelocity(direction.x, direction.y);
+        this.takenDamageState = true;
+        this.damageTime = 0;
     }
 
     defeated(){
         //TODO
+        this.destroy();
     }
 
     //call on preUpdate
     manageMovement(idleAnimName, runAnimName){
+        if(this.takenDamageState){
+            this.anims.play(idleAnimName, true);
+            return;
+        }
+
         this.setVelocity(0, 0);
 
         if(this.directionTracker.up){
