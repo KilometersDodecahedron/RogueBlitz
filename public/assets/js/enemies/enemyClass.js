@@ -5,6 +5,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.damage = 1;
         this.speed = 100;
 
+        //points you get for defeating it
+        this.pointValue = 10;
+
         this.takenDamageState = false;
         this.damageTime = 0;
         this.naturalTint = 0xffffff;

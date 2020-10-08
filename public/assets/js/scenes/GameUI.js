@@ -44,7 +44,6 @@ export default class GameUI extends Phaser.Scene {
         //each heart takes 2 hits, and index starts at 0
         let healthIndex = (health / 2) - 1;
         this.hearts.children.each((gameObject, index) => {
-            console.log([index, healthIndex]);
             if(index <= healthIndex){
                 gameObject.setTexture("ui-heart-full")
             //checks for the half-heart

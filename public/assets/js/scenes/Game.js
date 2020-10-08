@@ -32,6 +32,8 @@ export default class Game extends Phaser.Scene {
         this.cursors = undefined;
         //store refernce to the collider so it can be deleted when player dies
         this.playerEnemyCollisionArray = [];
+        //make sure enemies don't spawn on top of player
+        this.minimumSpawnDistance = 80;
     }
 
     preload() {
@@ -65,6 +67,13 @@ export default class Game extends Phaser.Scene {
         
         //give walls collision
         wallsLayer.setCollisionByProperty({collides: true});
+
+        //get enemy spawn points
+        const solidEnemySpawnPoints = map.getObjectLayer("Solid Enemies");
+        const phasingEnemySpawnPoints = map.getObjectLayer("Phasing Enemies");
+        console.log(phasingEnemySpawnPoints.objects[0]);
+
+        console.log(this.randomArrayShuffle(phasingEnemySpawnPoints.objects)[0]);
 
         //FOR DEBUGGING
         //debugDraw.debugDraw(wallsLayer, this);
@@ -146,13 +155,17 @@ export default class Game extends Phaser.Scene {
             }
         })
 
-        goblins.get(125, 125, "goblin");
-        ogres.get(400, 350, "ogre");
-        demons.get(300, 450, "demon");
-        necromancers.get(250, 350, "necromancer");
-        oozeSwampy.get(100, 100, "ooze-swampy");
-        oozeMuddy.get(500, 100, "ooze-muddy");
+        // goblins.get(125, 125, "goblin");
+        // ogres.get(400, 350, "ogre");
+        // demons.get(300, 450, "demon");
+        // necromancers.get(250, 350, "necromancer");
+        // oozeSwampy.get(100, 100, "ooze-swampy");
+        // oozeMuddy.get(500, 100, "ooze-muddy");
 
+        for(let i = 0; i < 6; i++){
+            this.spawnInRandomPosition(goblins, "goblin", solidEnemySpawnPoints);
+        }
+        
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
         this.physics.add.collider(ogres, wallsLayer);
@@ -209,6 +222,42 @@ export default class Game extends Phaser.Scene {
         if(player.health <= 0){
             this.playerEnemyCollisionArray = [];
         }
+    }
+
+    //get the position to spawn
+    spawnInRandomPosition(enemyType, enemyName, positionObjectLayer){
+        //randomize order
+        const shuffledArray = this.randomArrayShuffle(positionObjectLayer.objects);
+
+        //check spawn point is far enough from player
+        for(let i = 0; i < shuffledArray.length; i++){
+            let distance = Phaser.Math.Distance.Between(shuffledArray[i].x, shuffledArray[i].y, this.knight.x, this.knight.y);
+            if(distance >= this.minimumSpawnDistance){
+                this.spawnEnemy(enemyType, enemyName, shuffledArray[i]);
+                console.log(distance);
+                break;
+            }
+        }
+    }
+
+    //spawns an enemy
+    spawnEnemy(enemyType, enemyName, enemySpawnPositionObject){
+        //enemySpawnPositionObject is offset by half the height and width to accomidate for Tiled positioning issues
+        let newEnemy = enemyType.get(enemySpawnPositionObject.x + (enemySpawnPositionObject.width * 0.5), 
+            enemySpawnPositionObject.y - (enemySpawnPositionObject.height * 0.5), enemyName);
+    }
+
+    //used to help randomize spawn areas
+    randomArrayShuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
     }
 
     update(){
