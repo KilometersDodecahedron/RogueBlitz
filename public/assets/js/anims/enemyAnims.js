@@ -78,12 +78,27 @@ const createNecromancerAnims = anims => {
     });
 }
 
+const createOozeSwampyAnims = anims => {
+    anims.create({
+        key: "ooze-swampy-idle",
+        frames: anims.generateFrameNames("ooze-swampy", {start: 0, end: 3, prefix: "swampy_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
 
+    anims.create({
+        key: "ooze-swampy-run",
+        frames: anims.generateFrameNames("ooze-swampy", {start: 0, end: 3, prefix: "swampy_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
 
 export {
     createGoblinAnims,
     createOgreAnims,
     createDemonAnims,
     createNecromancerAnims,
-    createDemonSmallAnims
+    createDemonSmallAnims,
+    createOozeSwampyAnims
 }
