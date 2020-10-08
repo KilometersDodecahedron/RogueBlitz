@@ -64,6 +64,42 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.destroy();
     }
 
+    stopMoving(){
+        this.directionTracker.up = false;
+        this.directionTracker.down = false;
+        this.directionTracker.right = false;
+        this.directionTracker.left = false;
+    }
+
+    //only use if they can't move diagonally in this logical context
+    setMoveUp(){
+        this.directionTracker.up = true;
+        this.directionTracker.down = false;
+        this.directionTracker.right = false;
+        this.directionTracker.left = false; 
+    }
+
+    setMoveDown(){
+        this.directionTracker.up = false;
+        this.directionTracker.down = true;
+        this.directionTracker.right = false;
+        this.directionTracker.left = false;
+    }
+
+    setMoveRight(){
+        this.directionTracker.up = false;
+        this.directionTracker.down = false;
+        this.directionTracker.right = true;
+        this.directionTracker.left = false;
+    }
+
+    setMoveLeft(){
+        this.directionTracker.up = false;
+        this.directionTracker.down = false;
+        this.directionTracker.right = false;
+        this.directionTracker.left = true;
+    }
+
     //call on preUpdate
     manageMovement(idleAnimName, runAnimName){
         if(this.takenDamageState){

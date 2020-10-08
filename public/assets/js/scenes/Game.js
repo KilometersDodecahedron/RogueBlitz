@@ -4,7 +4,7 @@
 import debugDraw from "../utils/debug.js";
 
 //import animations stored in separate files
-import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims} from "../anims/enemyAnims.js";
+import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims} from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
 
 //import enemies
@@ -12,6 +12,7 @@ import Goblin from "../enemies/goblin.js";
 import Ogre from "../enemies/ogre.js";
 import Demon from "../enemies/demon.js";
 import Necromancer from "../enemies/necromancer.js";
+import OozeSwampy from "../enemies/oozeSwampy.js"
 
 //import Player
 import "../player/class/playerClass.js";
@@ -47,6 +48,7 @@ export default class Game extends Phaser.Scene {
         createOgreAnims(this.anims);
         createDemonAnims(this.anims);
         createNecromancerAnims(this.anims);
+        createOozeSwampyAnims(this.anims);
 
         const map = this.make.tilemap({key: 'dungeon'});
         //extra numbers are because tileset was "extruded" tile-extruder too make them fit together better
@@ -123,10 +125,19 @@ export default class Game extends Phaser.Scene {
             }
         });
 
+        const oozeSwamp = this.physics.add.group({
+            classType: OozeSwampy,
+            createCallback: (gameObject) => {
+                gameObject.body.onCollide = true;
+                gameObject.setPlayer(this.knight);
+            }
+        })
+
         goblins.get(125, 125, "goblin");
         ogres.get(400, 350, "ogre");
         demons.get(300, 450, "demon");
         necromancers.get(250, 350, "necromancer");
+        oozeSwamp.get(100, 100, "ooze-swampy");
 
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
@@ -141,12 +152,14 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(knives, ogres, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, demons, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, necromancers, this.handleProjectileHit, undefined, this);
+        this.physics.add.collider(knives, oozeSwamp, this.handleProjectileHit, undefined, this);
 
         //stores all the enemy collisions in an array, to be deleted when the player dies
         this.playerEnemyCollisionArray.push(this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(ogres, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(demons, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(necromancers, this.knight, this.handleEnemyCollisions, undefined, this));
+        this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeSwamp, this.knight, this.handleEnemyCollisions, undefined, this));
     }
 
     handleProjectileHit(projectile, enemy){
