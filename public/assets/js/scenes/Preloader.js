@@ -22,6 +22,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.atlas("demon-small", "../assets/img/enemies/demon-small.png", "../assets/json/enemies/demon-small.json");
         this.load.atlas("necromancer", "../assets/img/enemies/necromancer.png", "../assets/json/enemies/necromancer.json");
         this.load.atlas("ooze-swampy", "../assets/img/enemies/ooze-swampy.png", "../assets/json/enemies/ooze-swampy.json");
+        this.load.atlas("ooze-muddy", "../assets/img/enemies/ooze-muddy.png", "../assets/json/enemies/ooze-muddy.json");
 
         //hearts for health
         this.load.image("ui-heart-full", "../assets/img/ui/ui_heart_full.png");

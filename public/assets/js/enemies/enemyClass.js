@@ -7,6 +7,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
         this.takenDamageState = false;
         this.damageTime = 0;
+        this.naturalTint = 0xffffff;
 
         //how far to knock back the player when they collide
         this.knockBack = 200;
@@ -19,6 +20,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
+    //for enemies that have had their base color changed
+    callbackColorChange(){
+        this.setTint(this.naturalTint);
+    }
+
     preUpdate(time, deltaTime){
         super.preUpdate(time, deltaTime);
         if(this.takenDamageState){
@@ -26,7 +32,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
             // knockback period in milliseconds
             if(this.damageTime >= 200){
                 this.takenDamageState = false;
-                this.setTint(0xffffff);
+                this.setTint(this.naturalTint);
                 this.damageTime = 0;
             }
         }
