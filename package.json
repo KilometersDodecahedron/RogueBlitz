@@ -16,6 +16,7 @@
     "http-server": "^0.12.3",
     "mysql": "^2.18.1",
     "phaser": "^3.24.1",
+    "phaser-raycaster": "^0.8.1",
     "sequelize": "^6.3.5"
   },
   "repository": {

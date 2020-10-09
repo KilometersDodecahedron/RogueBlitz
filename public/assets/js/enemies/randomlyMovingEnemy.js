@@ -12,6 +12,8 @@ export default class RandomlyMovingEnemy extends Enemy{
         this.changeDirectionInterval = 2000;
         //check that it's started moving, so the direction change doesn't go off early
         this.hasStartedMoving = false;
+        //used by shootingEnemies to have them hold still while firing
+        this.stopped = false;
 
         //storing this here so it can be destroyed when the object is destroyed
         this.randomMovementEvent = Phaser.Time.TimerEvent;
@@ -60,6 +62,11 @@ export default class RandomlyMovingEnemy extends Enemy{
     setMovementInRandomDirection(){
         //starts them moving
         this.hasStartedMoving = true;
+
+        if(this.stopped){
+            return;
+        }
+
         //set random movement
         if(this.canMoveDiagonally){
             this.directionTracker.up = this.coinFlip();

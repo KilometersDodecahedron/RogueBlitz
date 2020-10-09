@@ -15,8 +15,18 @@ const config = {
             debug: true
         }
     },
-    scene: [Preloader, Game, GameUI]
+
     //add Menu class first once button is built
+    scene: [Preloader, Game, GameUI],
+    plugins: {
+        scene: [
+            {
+                key: 'PhaserRaycaster',
+                plugin: PhaserRaycaster,
+                mapping: 'raycasterPlugin'
+            }
+        ]
+    }
 }
 
 const game = new Phaser.Game(config);
