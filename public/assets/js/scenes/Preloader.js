@@ -1,6 +1,6 @@
-export default class Preloader extends Phaser.Scene {
+export default class oader extends Phaser.Scene {
     constructor() {
-        super("preloader");
+        super("oader");
     }
 
     preload() {
@@ -23,6 +23,10 @@ export default class Preloader extends Phaser.Scene {
         this.load.atlas("necromancer", "../assets/img/enemies/necromancer.png", "../assets/json/enemies/necromancer.json");
         this.load.atlas("ooze-swampy", "../assets/img/enemies/ooze-swampy.png", "../assets/json/enemies/ooze-swampy.json");
         this.load.atlas("ooze-muddy", "../assets/img/enemies/ooze-muddy.png", "../assets/json/enemies/ooze-muddy.json");
+        this.load.atlas("zombie-ice", "../assets/img/enemies/zombie-ice.png", "../assets/json/enemies/zombie-ice.json");
+
+        //attacks
+        this.load.atlas("energy-ball", "../assets/img/enemies/attacks/energy_ball.png", "../assets/json/enemies/attacks/energy_ball.json")
 
         //hearts for health
         this.load.image("ui-heart-full", "../assets/img/ui/ui_heart_full.png");
