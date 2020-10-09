@@ -56,6 +56,9 @@ export default class Game extends Phaser.Scene {
         this.enemiesTierFour = [];
         this.enemiesTierFive = [];
         this.enemiesTierSix = [];
+        //raycaster
+        this.raycaster;
+        this.ray;
     }
 
     preload() {
@@ -96,11 +99,10 @@ export default class Game extends Phaser.Scene {
         const solidEnemySpawnPoints = map.getObjectLayer("Solid Enemies");
         const phasingEnemySpawnPoints = map.getObjectLayer("Phasing Enemies");
 
-        const testEnergyBall = this.physics.add.sprite(200, 200, "energy-ball").setScale(0.07, 0.07).setCircle(100);
-        testEnergyBall.anims.play("energy-ball", true);
-
         //FOR DEBUGGING
         //debugDraw.debugDraw(wallsLayer, this);
+
+        //create knives for player to throw
         const knives = this.physics.add.group({
             classType: Weapon,
             createCallback: (gameObject) => {
@@ -112,6 +114,19 @@ export default class Game extends Phaser.Scene {
         //add the knight
         this.knight = this.add.player(this.scene, 200, 200, "knight");
         this.knight.setKnives(knives);
+
+        //just making sure this works
+        const testEnergyBall = this.physics.add.sprite(200, 200, "energy-ball").setScale(0.07, 0.07).setCircle(100);
+        testEnergyBall.anims.play("energy-ball", true);
+
+        //testing raycasting
+        this.raycaster = this.raycasterPlugin.createRaycaster();
+        this.raycaster.mapGameObjects(wallsLayer);
+        this.raycaster.mapGameObjects(this.knight);
+        this.ray = this.raycaster.createRay();
+        let intersection = this.ray.cast();
+
+        console.log(intersection)
     
         //set camera area
         this.cameras.main.setBounds(0, 0, 800, 560);
