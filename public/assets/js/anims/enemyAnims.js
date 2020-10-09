@@ -94,6 +94,22 @@ const createOozeSwampyAnims = anims => {
     });
 }
 
+const createZombieIceAnims = anims => {
+    anims.create({
+        key: "zombie-ice-idle",
+        frames: anims.generateFrameNames("zombie-ice", {start: 0, end: 3, prefix: "ice_zombie_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "zombie-ice-run",
+        frames: anims.generateFrameNames("zombie-ice", {start: 0, end: 3, prefix: "ice_zombie_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
 const createOozeMuddyAnims = anims => {
     anims.create({
         key: "ooze-muddy-idle",
@@ -110,6 +126,15 @@ const createOozeMuddyAnims = anims => {
     });
 }
 
+const createEnergyBallAnims = anims => {
+    anims.create({
+        key: "energy-ball",
+        frames: anims.generateFrameNames("energy-ball", {start: 1, end: 8, prefix: "energy-ball-", suffix: ".png"}),
+        frameRate: 20,
+        repeat: -1
+    })
+}
+
 export {
     createGoblinAnims,
     createOgreAnims,
@@ -117,5 +142,7 @@ export {
     createNecromancerAnims,
     createDemonSmallAnims,
     createOozeSwampyAnims,
-    createOozeMuddyAnims
+    createOozeMuddyAnims,
+    createEnergyBallAnims,
+    createZombieIceAnims
 }

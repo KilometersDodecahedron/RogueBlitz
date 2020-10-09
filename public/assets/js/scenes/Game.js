@@ -4,7 +4,7 @@
 import debugDraw from "../utils/debug.js";
 
 //import animations stored in separate files
-import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims} from "../anims/enemyAnims.js";
+import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims, createEnergyBallAnims, createZombieIceAnims} from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
 
 //import enemies
@@ -44,6 +44,9 @@ export default class Game extends Phaser.Scene {
         this.currentSpawingTimer = 0;
         //how many enemies spawn each time
         this.enemiesInWave = 4;
+        //make sure enemies don't spawn if too many are on the screen
+        this.currentEnemyCount = 0;
+        this.maxEnemyCount = 30;
         //store group objects for enemies in here
         //the tier says how strong they are
         //they store OBJECTS, 3 properties, first is the group, second the name, third is the SPAWNING POINT TYPE
@@ -72,11 +75,13 @@ export default class Game extends Phaser.Scene {
         createNecromancerAnims(this.anims);
         createOozeSwampyAnims(this.anims);
         createOozeMuddyAnims(this.anims);
+        createEnergyBallAnims(this.anims);
+        createZombieIceAnims(this.anims);
 
         const map = this.make.tilemap({key: 'dungeon'});
+        
         //extra numbers are because tileset was "extruded" tile-extruder too make them fit together better
         const tileset = map.addTilesetImage("dungeonPack", 'tiles', 16, 16, 1, 2);
-
         
         //create the floor
         //not storing the Floor layer in a variable, since it won't need to do anything
@@ -90,6 +95,9 @@ export default class Game extends Phaser.Scene {
         //get enemy spawn points
         const solidEnemySpawnPoints = map.getObjectLayer("Solid Enemies");
         const phasingEnemySpawnPoints = map.getObjectLayer("Phasing Enemies");
+
+        const testEnergyBall = this.physics.add.sprite(200, 200, "energy-ball").setScale(0.07, 0.07).setCircle(100);
+        testEnergyBall.anims.play("energy-ball", true);
 
         //FOR DEBUGGING
         //debugDraw.debugDraw(wallsLayer, this);
@@ -193,17 +201,6 @@ export default class Game extends Phaser.Scene {
             sceneEvents.off(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
         })
 
-        // goblins.get(125, 125, "goblin");
-        // ogres.get(400, 350, "ogre");
-        // demons.get(300, 450, "demon");
-        // necromancers.get(250, 350, "necromancer");
-        // oozeSwampy.get(100, 100, "ooze-swampy");
-        // oozeMuddy.get(500, 100, "ooze-muddy");
-
-        // for(let i = 0; i < 6; i++){
-        //     this.spawnInRandomPosition(goblins, "goblin", solidEnemySpawnPoints);
-        // }
-
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
         this.physics.add.collider(ogres, wallsLayer);
@@ -266,6 +263,7 @@ export default class Game extends Phaser.Scene {
     handleEnemyDefeated(points){
         this.score += points;
         this.currentSpawingTimer += this.enemyDeathTimerReduction;
+        this.currentEnemyCount -= 1;
         sceneEvents.emit(eventNames.scoreUpdated, this.score)
     }
 
@@ -316,6 +314,7 @@ export default class Game extends Phaser.Scene {
         //enemySpawnPositionObject is offset by half the height and width to accomidate for Tiled positioning issues
         let newEnemy = enemyType.get(enemySpawnPositionObject.x + (enemySpawnPositionObject.width * 0.5), 
             enemySpawnPositionObject.y - (enemySpawnPositionObject.height * 0.5), enemyName);
+        this.currentEnemyCount += 1;
     }
 
     //used to help randomize spawn areas
@@ -336,7 +335,8 @@ export default class Game extends Phaser.Scene {
             this.knight.update(this.cursors);
         }
 
-        if(!this.knight.isDead){
+        //it will only spawn new enemies if the player is alive, and enemy count is not at max
+        if(!this.knight.isDead && this.currentEnemyCount < this.maxEnemyCount){
             this.currentSpawingTimer += deltaTime;
             if(this.currentSpawingTimer >= this.spawningThreshold){
                 this.spawnNewSetOfEnemies();
