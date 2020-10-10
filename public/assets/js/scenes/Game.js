@@ -271,6 +271,7 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.setSize(13, 17).setOffset(2, 2);
                 //have them create an event when they come in collide with something 
                 gameObject.body.onCollide = true;
+                gameObject.setProjectileAndPlayerAndRayAndScene(energyBall, this.knight, this.playerCheckRay, this.wallCheckRay, this, "energy-ball");
             }
         });
         this.enemiesTierThree.push({group: orcMaskeds, name: "orc-masked", spawnLayer: solidEnemySpawnPoints});
