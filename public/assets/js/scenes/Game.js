@@ -40,7 +40,7 @@ export default class Game extends Phaser.Scene {
         //store refernce to the collider so it can be deleted when player dies
         this.playerEnemyCollisionArray = [];
         //make sure enemies don't spawn on top of player
-        this.minimumSpawnDistance = 80;
+        this.minimumSpawnDistance = 100;
         //track the player's score
         this.score = 0;
         this.gameUI;
@@ -83,6 +83,9 @@ export default class Game extends Phaser.Scene {
     create() {
         //add health bar
         this.gameUI = this.scene.run('game-ui');
+
+        //runs when loading game again after restart to reset everything
+        this.resetClassVariables();
 
         //add animations
         createPlayerAnims(this.anims);
@@ -370,7 +373,7 @@ export default class Game extends Phaser.Scene {
 
         //enemy projectiles hit player
         this.playerEnemyCollisionArray.push(this.physics.add.collider(energyBall, this.knight, this.handleEnemyProjectileHit, undefined, this));
-
+        
         this.spawnNewSetOfEnemies();
     }
 
@@ -431,6 +434,7 @@ export default class Game extends Phaser.Scene {
     }
 
     gameOver(){
+        //sceneEvents.destroy();
         this.scene.start("gameOverScreen")
     }
 
@@ -463,6 +467,7 @@ export default class Game extends Phaser.Scene {
         //spawn an enemy for each it tells you to
         for(let i = 0; i < this.enemiesInWave; i++){
             selectedEnemyArray = this.randomArrayShuffle(selectedEnemyArray);
+            console.log(selectedEnemyArray);
             this.spawnInRandomPosition(selectedEnemyArray[0].group, selectedEnemyArray[0].name, selectedEnemyArray[0].spawnLayer);
         }
 
@@ -486,6 +491,8 @@ export default class Game extends Phaser.Scene {
 
     //spawns an enemy
     spawnEnemy(enemyType, enemyName, enemySpawnPositionObject){
+        console.log(enemyType + " " + enemyName);
+        console.log(enemySpawnPositionObject)
         //enemySpawnPositionObject is offset by half the height and width to accomidate for Tiled positioning issues
         let newEnemy = enemyType.get(enemySpawnPositionObject.x + (enemySpawnPositionObject.width * 0.5), 
             enemySpawnPositionObject.y - (enemySpawnPositionObject.height * 0.5), enemyName);
@@ -514,6 +521,20 @@ export default class Game extends Phaser.Scene {
           array[randomIndex] = temporaryValue;
         }
         return array;
+    }
+
+    //run this when you leave the scene
+    resetClassVariables(){
+        this.playerEnemyCollisionArray = [];
+        this.score = 0;
+        this.currentSpawingTimer = 0;
+        this.currentEnemyCount = 0;
+        this.enemiesTierOne = [];
+        this.enemiesTierTwo = [];
+        this.enemiesTierThree = [];
+        this.enemiesTierFour = [];
+        this.enemiesTierFive = [];
+        this.enemiesTierSix = [];
     }
 
     update(time, deltaTime){
