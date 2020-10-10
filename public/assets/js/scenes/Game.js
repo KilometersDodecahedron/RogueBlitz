@@ -38,6 +38,7 @@ export default class Game extends Phaser.Scene {
         this.minimumSpawnDistance = 80;
         //track the player's score
         this.score = 0;
+        this.gameUI;
         //how many points you need before stronger enemies spawn
         this.enemyStrengthScoreThreshold = [100, 300, 700, 1500, 3000];
         //these 3 variables manage enemy spawning
@@ -76,7 +77,7 @@ export default class Game extends Phaser.Scene {
 
     create() {
         //add health bar
-        this.scene.run('game-ui');
+        this.gameUI = this.scene.run('game-ui');
 
         //add animations
         createPlayerAnims(this.anims);
@@ -247,6 +248,7 @@ export default class Game extends Phaser.Scene {
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
             sceneEvents.off(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
             sceneEvents.off(eventNames.halfSecondTimer, this.countTowardsEnemySpawn, this);
+            this.scene.stop("game-ui");
             this.halfSecondTimerEvent.destroy();
         })
 
@@ -305,11 +307,13 @@ export default class Game extends Phaser.Scene {
 
         //stops
         if(player.health <= 0){
-            this.playerEnemyCollisionArray = [];
+            this.playerEnemyCollisionArray.destroy();
         }
 
         projectile.destroy();
     }
+
+
 
     handleProjectileWallCollision(projectile, wall){
         projectile.destroy();
@@ -329,7 +333,18 @@ export default class Game extends Phaser.Scene {
         //stops
         if(player.health <= 0){
             this.playerEnemyCollisionArray = [];
+            //delay before going to game over screen
+            this.time.addEvent({
+                delay: 3000,
+                callback: () => {
+                    this.gameOver()
+                }
+            })
         }
+    }
+
+    gameOver(){
+        this.scene.start("gameOverScreen")
     }
 
     //called as an event
