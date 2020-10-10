@@ -203,25 +203,14 @@ export {
     createGoblinAnims,
     createOgreAnims,
     createDemonAnims,
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    createNecromancerAnims
-=======
-=======
->>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
     createNecromancerAnims,
     createDemonSmallAnims,
     createOozeSwampyAnims,
     createOozeMuddyAnims,
     createEnergyBallAnims,
-<<<<<<< HEAD
     createZombieIceAnims,
     createSkeletonAnims,
     createZombieAnims,
     createOrcMaskedAnims,
     createDemonBigAnims
->>>>>>> Stashed changes
-=======
-    createZombieIceAnims
->>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 }
