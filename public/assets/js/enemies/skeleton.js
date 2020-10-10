@@ -1,12 +1,12 @@
 import RandomlyMovingEnemy from "./randomlyMovingEnemy.js";
 
-export default class Goblin extends RandomlyMovingEnemy {
+export default class Skeleton extends RandomlyMovingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.health = 5;
         this.damage = 1;
-        this.speed = 45;
-        this.knockBack = 240;
+        this.speed = 85;
+        this.knockBack = 150;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
@@ -21,6 +21,6 @@ export default class Goblin extends RandomlyMovingEnemy {
         super.preUpdate(time, deltaTime);
 
         //moves based on directionTracker parent class property
-        this.manageMovement("goblin-idle", "goblin-run");  
+        this.manageMovement("skelet-idle", "skelet-run");  
     }
 }

@@ -1,17 +1,17 @@
 import RandomlyMovingEnemy from "./randomlyMovingEnemy.js";
 
-export default class Goblin extends RandomlyMovingEnemy {
+export default class Zombie extends RandomlyMovingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.health = 5;
-        this.damage = 1;
-        this.speed = 45;
-        this.knockBack = 240;
+        this.health = 10;
+        this.damage = 2;
+        this.speed = 20;
+        this.knockBack = 350;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 10;
+        this.pointValue = 15;
         this.descendantStartMethod();
     }
 
@@ -21,6 +21,6 @@ export default class Goblin extends RandomlyMovingEnemy {
         super.preUpdate(time, deltaTime);
 
         //moves based on directionTracker parent class property
-        this.manageMovement("goblin-idle", "goblin-run");  
+        this.manageMovement("zombie-idle", "zombie-run");  
     }
 }

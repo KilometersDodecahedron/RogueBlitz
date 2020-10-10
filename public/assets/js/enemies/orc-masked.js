@@ -1,50 +1,30 @@
 import ShootingEnemy from "./shootingEnemies.js";
 
-export default class Necromancer extends ShootingEnemy {
+export default class OrcMasked extends ShootingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.health = 15;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-        this.damage = 6;
-        this.speed = 45;
-        this.knockBack = 150;
-=======
+        this.health = 10;
         this.damage = 2;
-        this.speed = 50;
+        this.speed = 40;
         this.knockBack = 150;
-=======
-        this.damage = 2;
-        this.speed = 45;
-        this.knockBack = 150;
->>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
         this.shotDamage = 2;
         this.shotKnockback = 150;
         //make the projectile a different color
         //write it as '0x' followed by the hexcode
         //0xffffff for no color change
-        this.shotColor = 0x671d9d;
+        this.shotColor = 0xff704d;
         //check if player is in range before firing
-<<<<<<< HEAD
-        this.fireRange = 250;
-        this.shotSpeed = 110;
+        this.fireRange = 200;
+        this.shotSpeed = 80;
         //this is in milliseconds
-        this.fireRate = 2300;
+        this.fireRate = 2800;
 
->>>>>>> Stashed changes
-=======
-        this.fireRange = 230;
-        this.shotSpeed = 110;
-        //this is in milliseconds
-        this.fireRate = 2700;
-
->>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 40;
+        this.pointValue = 25;
         this.descendantStartMethod();
     }
 
@@ -54,6 +34,6 @@ export default class Necromancer extends ShootingEnemy {
         super.preUpdate(time, deltaTime);
 
         //moves based on directionTracker parent class property
-        this.manageMovement("necromancer-idle", "necromancer-run");  
+        this.manageMovement("orc-masked-idle", "orc-masked-run");  
     }
 }
