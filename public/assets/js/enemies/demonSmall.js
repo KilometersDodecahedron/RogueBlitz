@@ -4,14 +4,14 @@ export default class demonSmall extends RandomlyMovingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.health = 5;
-        this.damage = 3;
-        this.speed = 55;
+        this.damage = 2;
+        this.speed = 65;
         this.knockBack = 250;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 10;
+        this.pointValue = 15;
 
         this.descendantStartMethod();
     }

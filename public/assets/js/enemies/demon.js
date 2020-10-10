@@ -5,14 +5,14 @@ export default class Demon extends RandomlyMovingEnemy {
         super(scene, x, y, texture, frame);
         this.health = 10;
         this.damage = 2;
-        this.speed = 50;
+        this.speed = 65;
         this.knockBack = 300;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
 
-        this.pointValue = 25;
+        this.pointValue = 30;
 
         this.descendantStartMethod();
     }
