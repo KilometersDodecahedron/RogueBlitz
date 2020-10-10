@@ -3,7 +3,12 @@ import ShootingEnemy from "./shootingEnemies.js";
 export default class ZombieIce extends ShootingEnemy{
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
+<<<<<<< HEAD
         this.health = 15;
+=======
+
+        this.health = 5;
+>>>>>>> 8ea564abe9d708889d68fef5a422cd9e01e3581f
         this.speed = 45;
         this.damage = 1;
         this.knockBack = 175;
