@@ -1,6 +1,6 @@
 export default class oader extends Phaser.Scene {
     constructor() {
-        super("oader");
+        super("preloader");
     }
 
     preload() {
