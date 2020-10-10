@@ -45,7 +45,7 @@ export default class Game extends Phaser.Scene {
         this.enemyDeathTimerReduction = 5000;
         this.currentSpawingTimer = 0;
         //how many enemies spawn each time
-        this.enemiesInWave = 4;
+        this.enemiesInWave = 5;
         //make sure enemies don't spawn if too many are on the screen
         this.currentEnemyCount = 0;
         this.maxEnemyCount = 30;
@@ -147,7 +147,6 @@ export default class Game extends Phaser.Scene {
         const zombieIce = this.physics.add.group({
             classType: ZombieIce,
             createCallback: (gameObject) => {
-
                 gameObject.body.onCollide = true;
                 gameObject.setProjectileAndPlayerAndRayAndScene(energyBall, this.knight, this.playerCheckRay, this.wallCheckRay, this, "energy-ball");
             }
@@ -202,6 +201,7 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.setSize(13, 20).setOffset(2, 5);
                 //have them create an event when they come in collide with something 
                 gameObject.body.onCollide = true;
+                gameObject.setProjectileAndPlayerAndRayAndScene(energyBall, this.knight, this.playerCheckRay, this.wallCheckRay, this, "energy-ball");
             }
         });
         this.enemiesTierSix.push({group: necromancers, name: "necromancer", spawnLayer: solidEnemySpawnPoints});
@@ -294,7 +294,6 @@ export default class Game extends Phaser.Scene {
     }
 
     handleEnemyProjectileHit(player, projectile){
-        console.log(projectile);
         let directionX = player.x - projectile.x;
         let directionY = player.y - projectile.y;
 
