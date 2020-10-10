@@ -12,6 +12,8 @@ export default class Demon extends RandomlyMovingEnemy {
         this.canBeStill = false;
         this.canMoveDiagonally = true;
 
+        this.pointValue = 25;
+
         this.descendantStartMethod();
     }
 

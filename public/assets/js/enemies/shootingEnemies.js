@@ -13,6 +13,7 @@ export default class ShootingEnemy extends RandomlyMovingEnemy{
         //check if player is in range before firing
         this.fireRange = 200;
         this.shotSpeed = 100;
+        this.shotColor = 0xffffff;
         //this is in milliseconds
         this.fireRate = 3000;
         this.checkPlayerRate = 200;
@@ -62,7 +63,6 @@ export default class ShootingEnemy extends RandomlyMovingEnemy{
         this.rayWall = rayWall;
         this.currentScene = scene;
         this.projectileName = projectileName;
-        console.log(scene);
     }
 
     checkIfPlayerIsInRange(){
@@ -91,7 +91,7 @@ export default class ShootingEnemy extends RandomlyMovingEnemy{
         projectile.body.onCollide = true;
         projectile.setScale(0.07, 0.07).setCircle(100);
         projectile.anims.play("energy-ball", true);
+        projectile.tint = this.shotColor;
         this.currentScene.physics.velocityFromRotation(angle, speed, projectile.body.velocity);
-        //toDo spawn the projectile and pass in the scene info
     }
 }

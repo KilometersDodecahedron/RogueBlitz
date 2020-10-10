@@ -11,6 +11,10 @@ export default class ZombieIce extends ShootingEnemy{
 
         this.shotDamage = 1;
         this.shotKnockback = 150;
+        //make the projectile a different color
+        //write it as '0x' followed by the hexcode
+        //0xffffff for no color change
+        this.shotColor = 0xffffff;
         //check if player is in range before firing
         this.fireRange = 200;
         this.shotSpeed = 100;
@@ -20,7 +24,7 @@ export default class ZombieIce extends ShootingEnemy{
         this.changeDirectionInterval = 1000;
         this.movesFromTheStart = true;
         this.canBeStill = true;
-        this.canMoveDiagonally = false;
+        this.canMoveDiagonally = true;
 
         this.descendantStartMethod();
     }
