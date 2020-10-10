@@ -25,7 +25,7 @@ export default class ZombieIce extends ShootingEnemy{
         this.movesFromTheStart = true;
         this.canBeStill = true;
         this.canMoveDiagonally = true;
-        this.pointValue = 10;
+        this.pointValue = 15;
 
         this.descendantStartMethod();
     }

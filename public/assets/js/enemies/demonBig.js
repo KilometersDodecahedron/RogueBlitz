@@ -5,13 +5,13 @@ export default class DemonBig extends RandomlyMovingEnemy {
         super(scene, x, y, texture, frame);
         this.health = 20;
         this.damage = 3;
-        this.speed = 45;
+        this.speed = 70;
         this.knockBack = 350;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 40;
+        this.pointValue = 55;
         this.descendantStartMethod();
     }
 

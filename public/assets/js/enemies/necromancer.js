@@ -25,7 +25,7 @@ export default class Necromancer extends ShootingEnemy {
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 40;
+        this.pointValue = 55;
         this.descendantStartMethod();
     }
 

@@ -4,14 +4,14 @@ export default class Zombie extends RandomlyMovingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.health = 10;
-        this.damage = 2;
-        this.speed = 20;
+        this.damage = 3;
+        this.speed = 60;
         this.knockBack = 350;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 15;
+        this.pointValue = 20;
         this.descendantStartMethod();
     }
 
