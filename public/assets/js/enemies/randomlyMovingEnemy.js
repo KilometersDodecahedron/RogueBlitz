@@ -43,10 +43,8 @@ export default class RandomlyMovingEnemy extends Enemy{
     }
 
     //stop triggering events when this object is gone
-    destroy(fromScene){
+    preDestroy(){
         this.randomMovementEvent.destroy();
-        //better to have the
-        super.destroy(fromScene);
     }
 
     //have goblin change direction when it hits a wall

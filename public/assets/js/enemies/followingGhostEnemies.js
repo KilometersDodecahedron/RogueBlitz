@@ -32,7 +32,7 @@ export default class FollowingGhostEnemy extends Enemy{
 
     preUpdate(time, deltaTime){
         super.preUpdate(time, deltaTime);
-        if(!this.thePlayer ){
+        if(!this.thePlayer){
             return;
         }
         //start frame by seeing if it's time to check for the player's position
