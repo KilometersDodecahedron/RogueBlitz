@@ -18,8 +18,8 @@ export default class Menu extends Phaser.Scene {
 
         //title text
         var titleConfig={fontSize:'50px',color:'#ff0000',fontFamily: 'Arial'};
-        this.title=this.add.text(2,.75,"ROGUE BLITZ!!!",titleConfig);
-        this.title.setOrigin(-.6,-.25);
+        this.title=this.add.text(2,.75,"ROGUE BLITZ",titleConfig);
+        this.title.setOrigin(-.67,-.25);
 
         //rectangle button place holders and text
         var r1 = this.add.rectangle(400, 200, 320, 110, 0xff0000);
@@ -32,9 +32,10 @@ export default class Menu extends Phaser.Scene {
         var scoresConfig={fontSize:'40px',color:'#000000',fontFamily: 'Arial'};
         this.scores=this.add.text(2,.75,"HIGH SCORES",scoresConfig);
         this.scores.setOrigin(-.92,-7.43);
-        this.input.once('pointerdown', function () {
-this.scene.start('preloader');
-}, this);
+        r1.setInteractive();
+        r1.on('pointerdown', () => { this.scene.start('preloader');});
+        r2.setInteractive();
+        r2.on('pointerdown', () => { this.scene.start('scores');});
         console.log("Ready!");
     }
 }
