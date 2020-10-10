@@ -1,21 +1,30 @@
-import RandomlyMovingEnemy from "./randomlyMovingEnemy.js";
+import ShootingEnemy from "./shootingEnemies.js";
 
-export default class Demon extends RandomlyMovingEnemy {
+export default class OrcMasked extends ShootingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.health = 10;
         this.damage = 2;
-        this.speed = 50;
-        this.knockBack = 300;
+        this.speed = 40;
+        this.knockBack = 150;
+
+        this.shotDamage = 2;
+        this.shotKnockback = 150;
+        //make the projectile a different color
+        //write it as '0x' followed by the hexcode
+        //0xffffff for no color change
+        this.shotColor = 0xff704d;
+        //check if player is in range before firing
+        this.fireRange = 200;
+        this.shotSpeed = 80;
+        //this is in milliseconds
+        this.fireRate = 2800;
+
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-<<<<<<< Updated upstream
-
-=======
         this.pointValue = 25;
->>>>>>> Stashed changes
         this.descendantStartMethod();
     }
 
@@ -25,6 +34,6 @@ export default class Demon extends RandomlyMovingEnemy {
         super.preUpdate(time, deltaTime);
 
         //moves based on directionTracker parent class property
-        this.manageMovement("demon-idle", "demon-run");  
+        this.manageMovement("orc-masked-idle", "orc-masked-run");  
     }
 }

@@ -1,21 +1,17 @@
 import RandomlyMovingEnemy from "./randomlyMovingEnemy.js";
 
-export default class Demon extends RandomlyMovingEnemy {
+export default class Zombie extends RandomlyMovingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.health = 10;
         this.damage = 2;
-        this.speed = 50;
-        this.knockBack = 300;
+        this.speed = 20;
+        this.knockBack = 350;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-<<<<<<< Updated upstream
-
-=======
-        this.pointValue = 25;
->>>>>>> Stashed changes
+        this.pointValue = 15;
         this.descendantStartMethod();
     }
 
@@ -25,6 +21,6 @@ export default class Demon extends RandomlyMovingEnemy {
         super.preUpdate(time, deltaTime);
 
         //moves based on directionTracker parent class property
-        this.manageMovement("demon-idle", "demon-run");  
+        this.manageMovement("zombie-idle", "zombie-run");  
     }
 }

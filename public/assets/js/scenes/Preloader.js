@@ -16,6 +16,24 @@ export default class Preloader extends Phaser.Scene {
         this.load.atlas("ogre", "../assets/img/enemies/ogre.png", "../assets/json/enemies/ogre.json");
         this.load.atlas("demon", "../assets/img/enemies/demon.png", "../assets/json/enemies/demon.json");
         this.load.atlas("necromancer", "../assets/img/enemies/necromancer.png", "../assets/json/enemies/necromancer.json");
+<<<<<<< Updated upstream
+=======
+        this.load.atlas("ooze-swampy", "../assets/img/enemies/ooze-swampy.png", "../assets/json/enemies/ooze-swampy.json");
+        this.load.atlas("ooze-muddy", "../assets/img/enemies/ooze-muddy.png", "../assets/json/enemies/ooze-muddy.json");
+        this.load.atlas("zombie-ice", "../assets/img/enemies/zombie-ice.png", "../assets/json/enemies/zombie-ice.json");
+        this.load.atlas("skeleton", "../assets/img/enemies/skeleton.png", "../assets/json/enemies/skeleton.json");
+        this.load.atlas("zombie", "../assets/img/enemies/zombie.png", "../assets/json/enemies/zombie.json");
+        this.load.atlas("orc-masked", "../assets/img/enemies/orc-masked.png", "../assets/json/enemies/orc-masked.json");
+        this.load.atlas("demon-big", "../assets/img/enemies/demon-big.png", "../assets/json/enemies/demon-big.json");
+
+        //attacks
+        this.load.atlas("energy-ball", "../assets/img/enemies/attacks/energy_ball.png", "../assets/json/enemies/attacks/energy_ball.json")
+
+        //hearts for health
+        this.load.image("ui-heart-full", "../assets/img/ui/ui_heart_full.png");
+        this.load.image("ui-heart-half", "../assets/img/ui/ui_heart_half.png");
+        this.load.image("ui-heart-empty", "../assets/img/ui/ui_heart_empty.png");
+>>>>>>> Stashed changes
     }
 
     create() {
