@@ -16,5 +16,9 @@ export default class GameOverScreen extends Phaser.Scene {
         this.playAgainButton = new Phaser.Geom.Rectangle(200, 400, 100, 100);
 
         this.graphics.fillRectShape(this.playAgainButton);
+
+        this.playAgainButton.setInteractive();
+
+        this.playAgainButton.on('pointerover', () => { console.log('pointerover'); });
     }
 }
