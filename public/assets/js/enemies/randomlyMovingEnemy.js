@@ -12,6 +12,8 @@ export default class RandomlyMovingEnemy extends Enemy{
         this.changeDirectionInterval = 2000;
         //check that it's started moving, so the direction change doesn't go off early
         this.hasStartedMoving = false;
+        //used by shootingEnemies to have them hold still while firing
+        this.stopped = false;
 
         //storing this here so it can be destroyed when the object is destroyed
         this.randomMovementEvent = Phaser.Time.TimerEvent;
@@ -34,17 +36,15 @@ export default class RandomlyMovingEnemy extends Enemy{
     //run this at the end of the constructor of a descendant class
     descendantStartMethod(){
         //start them moving, if they move from start
-        //NOTE calling this here instead of the parent class to make sure it uses the movesFromTheStart of the 
+        //NOTE calling this here instead of the parent class to make sure it uses the movesFromTheStart of the descendant
         if(this.movesFromTheStart){
             this.setMovementInRandomDirection();
         }
     }
 
     //stop triggering events when this object is gone
-    destroy(fromScene){
+    preDestroy(){
         this.randomMovementEvent.destroy();
-        //better to have the
-        super.destroy(fromScene);
     }
 
     //have goblin change direction when it hits a wall
@@ -60,6 +60,11 @@ export default class RandomlyMovingEnemy extends Enemy{
     setMovementInRandomDirection(){
         //starts them moving
         this.hasStartedMoving = true;
+
+        if(this.stopped){
+            return;
+        }
+
         //set random movement
         if(this.canMoveDiagonally){
             this.directionTracker.up = this.coinFlip();

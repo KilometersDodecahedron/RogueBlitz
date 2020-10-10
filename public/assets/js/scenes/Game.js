@@ -4,11 +4,15 @@
 import debugDraw from "../utils/debug.js";
 
 //import animations stored in separate files
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims} from "../anims/enemyAnims.js";
 =======
 import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims, createEnergyBallAnims, createZombieIceAnims, createSkeletonAnims, createZombieAnims, createOrcMaskedAnims, createDemonBigAnims, createDemonSmallAnims} from "../anims/enemyAnims.js";
 >>>>>>> Stashed changes
+=======
+import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims, createEnergyBallAnims, createZombieIceAnims} from "../anims/enemyAnims.js";
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 import { createPlayerAnims } from "../anims/playerAnims.js";
 
 //import enemies
@@ -16,21 +20,32 @@ import Goblin from "../enemies/goblin.js";
 import Ogre from "../enemies/ogre.js";
 import Demon from "../enemies/demon.js";
 import Necromancer from "../enemies/necromancer.js";
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 import OozeSwampy from "../enemies/oozeSwampy.js";
 import OozeMuddy from "../enemies/oozeMuddy.js";
 import ZombieIce from "../enemies/zombieIce.js";
 import EnemyProjectile from "../enemies/attacks/enemyProjectile.js";
+<<<<<<< HEAD
 import Skeleton from "../enemies/skeleton.js";
 import Zombie from "../enemies/zombie.js";
 import OrcMasked from "../enemies/orc-masked.js";
 import DemonBig from "../enemies/demonBig.js";
 import DemonSmall from "../enemies/demonSmall.js";
 >>>>>>> Stashed changes
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
 //import Player
-import Player from "../player/class/playerClass.js";
+import "../player/class/playerClass.js";
+import Weapon from "../player/weapons/WeaponClass.js"
+
+//events
+import { sceneEvents } from "../events/eventCenter.js";
+import { eventNames } from "../events/eventNames.js";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -39,6 +54,42 @@ export default class Game extends Phaser.Scene {
         this.knight = undefined;
         //arrow keys and space bar get stored in here
         this.cursors = undefined;
+        //store refernce to the collider so it can be deleted when player dies
+        this.playerEnemyCollisionArray = [];
+        //make sure enemies don't spawn on top of player
+        this.minimumSpawnDistance = 80;
+        //track the player's score
+        this.score = 0;
+        this.gameUI;
+        //how many points you need before stronger enemies spawn
+        this.enemyStrengthScoreThreshold = [100, 300, 700, 1500, 3000];
+        //these 3 variables manage enemy spawning
+        this.spawningThreshold = 40000;
+        this.enemyDeathTimerReduction = 5000;
+        this.currentSpawingTimer = 0;
+        //how many enemies spawn each time
+        this.enemiesInWave = 5;
+        //make sure enemies don't spawn if too many are on the screen
+        this.currentEnemyCount = 0;
+        this.maxEnemyCount = 30;
+        //store group objects for enemies in here
+        //the tier says how strong they are
+        //they store OBJECTS, 3 properties, first is the group, second the name, third is the SPAWNING POINT TYPE
+        this.enemiesTierOne = [];
+        this.enemiesTierTwo = [];
+        this.enemiesTierThree = [];
+        this.enemiesTierFour = [];
+        this.enemiesTierFive = [];
+        this.enemiesTierSix = [];
+        //raycaster
+        this.playerCheckRaycaster;
+        this.wallCheckRaycaster
+        this.playerCheckRay;
+        this.wallCheckRay;
+        //indexes of the tiles in the json file of the sprite sheet that are walls
+        this.wallTileIndexes = [225,3,226,257,35,258,228,291,292,259,260,227,323,324];
+        //store the event here that goes off every 500 milliseconds. It's more data efficient than update for timers
+        this.halfSecondTimerEvent = Phaser.Time.TimerEvent;
     }
 
     preload() {
@@ -47,29 +98,38 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        //add health bar
+        this.gameUI = this.scene.run('game-ui');
+
         //add animations
         createPlayerAnims(this.anims);
         createGoblinAnims(this.anims);
         createOgreAnims(this.anims);
         createDemonAnims(this.anims);
         createNecromancerAnims(this.anims);
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         createOozeSwampyAnims(this.anims);
         createOozeMuddyAnims(this.anims);
         createEnergyBallAnims(this.anims);
         createZombieIceAnims(this.anims);
+<<<<<<< HEAD
         createSkeletonAnims(this.anims);
         createZombieAnims(this.anims);
         createOrcMaskedAnims(this.anims);
         createDemonBigAnims(this.anims);
         createDemonSmallAnims(this.anims);
 >>>>>>> Stashed changes
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
         const map = this.make.tilemap({key: 'dungeon'});
+        
         //extra numbers are because tileset was "extruded" tile-extruder too make them fit together better
         const tileset = map.addTilesetImage("dungeonPack", 'tiles', 16, 16, 1, 2);
-
         
         //create the floor
         //not storing the Floor layer in a variable, since it won't need to do anything
@@ -80,19 +140,62 @@ export default class Game extends Phaser.Scene {
         //give walls collision
         wallsLayer.setCollisionByProperty({collides: true});
 
+        //get enemy spawn points
+        const solidEnemySpawnPoints = map.getObjectLayer("Solid Enemies");
+        const phasingEnemySpawnPoints = map.getObjectLayer("Phasing Enemies");
+
         //FOR DEBUGGING
         //debugDraw.debugDraw(wallsLayer, this);
+
+        //create knives for player to throw
+        const knives = this.physics.add.group({
+            classType: Weapon,
+            createCallback: (gameObject) => {
+                //have them create an event when they come in collide with something 
+                gameObject.body.onCollide = true;
+            }
+        })
         
         //add the knight
         this.knight = this.add.player(this.scene, 200, 200, "knight");
-        
+        this.knight.setKnives(knives);
+
+        //create raycasters for shooting enemies
+        this.playerCheckRaycaster = this.raycasterPlugin.createRaycaster();
+        this.wallCheckRaycaster = this.raycasterPlugin.createRaycaster();
+        this.playerCheckRaycaster.mapGameObjects(this.knight);
+        this.wallCheckRaycaster.mapGameObjects(wallsLayer, false, {collisionTiles: this.wallTileIndexes });
+        //these get passed into the shooting enemies
+        this.playerCheckRay = this.playerCheckRaycaster.createRay();
+        this.wallCheckRay = this.wallCheckRaycaster.createRay();
+
         //set camera area
         this.cameras.main.setBounds(0, 0, 800, 560);
         //have it follow the knight
         this.cameras.main.startFollow(this.knight, true, 1, 1, 0, 0);
         //set camera zoom
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         this.cameras.main.setZoom(1);
+=======
+        this.cameras.main.setZoom(2.5);
+
+        //zombieIce shoots these 
+        const energyBall = this.physics.add.group({
+            classType: EnemyProjectile,
+        });
+
+        const zombieIce = this.physics.add.group({
+            classType: ZombieIce,
+            createCallback: (gameObject) => {
+                gameObject.body.onCollide = true;
+                gameObject.setProjectileAndPlayerAndRayAndScene(energyBall, this.knight, this.playerCheckRay, this.wallCheckRay, this, "energy-ball");
+            }
+        });
+        this.enemiesTierThree.push({group: zombieIce, name: "zombie-ice", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFour.push({group: zombieIce, name: "zombie-ice", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFive.push({group: zombieIce, name: "zombie-ice", spawnLayer: solidEnemySpawnPoints});
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
 =======
         this.cameras.main.setZoom(2.5);
@@ -122,6 +225,8 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+        this.enemiesTierOne.push({group: goblins, name: "goblin", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierTwo.push({group: goblins, name: "goblin", spawnLayer: solidEnemySpawnPoints});
 
         const ogres = this.physics.add.group({
             classType: Ogre,
@@ -132,11 +237,17 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
         this.enemiesTierFive.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
         this.enemiesTierSix.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
 >>>>>>> Stashed changes
+=======
+        this.enemiesTierThree.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFour.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFive.push({group: ogres, name: "ogre", spawnLayer: solidEnemySpawnPoints});
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
         const demons = this.physics.add.group({
             classType: Demon,
@@ -147,11 +258,18 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         });
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
         this.enemiesTierThree.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
         this.enemiesTierFour.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
 >>>>>>> Stashed changes
+=======
+        this.enemiesTierOne.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierTwo.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierThree.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+        this.enemiesTierFour.push({group: demons, name: "demon", spawnLayer: solidEnemySpawnPoints});
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
         const necromancers = this.physics.add.group({
             classType: Necromancer,
@@ -160,8 +278,10 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.setSize(13, 20).setOffset(2, 5);
                 //have them create an event when they come in collide with something 
                 gameObject.body.onCollide = true;
+                gameObject.setProjectileAndPlayerAndRayAndScene(energyBall, this.knight, this.playerCheckRay, this.wallCheckRay, this, "energy-ball");
             }
         });
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
         this.enemiesTierSix.push({group: necromancers, name: "necromancer", spawnLayer: solidEnemySpawnPoints});
@@ -259,19 +379,61 @@ export default class Game extends Phaser.Scene {
         //count timer
         sceneEvents.on(eventNames.halfSecondTimer, this.countTowardsEnemySpawn, this);
 >>>>>>> Stashed changes
+=======
+        this.enemiesTierSix.push({group: necromancers, name: "necromancer", spawnLayer: solidEnemySpawnPoints});
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
-        
-        goblins.get(125, 125, "goblin");
-        ogres.get(400, 350, "ogre");
-        demons.get(300, 450, "demon");
-        necromancers.get(250, 350, "necromancer");
+        const oozeSwampy = this.physics.add.group({
+            classType: OozeSwampy,
+            createCallback: (gameObject) => {
+                gameObject.body.collideWorldBounds=true;
+                gameObject.body.onCollide = true;
+                gameObject.setPlayer(this.knight);
+            }
+        })
+        this.enemiesTierFour.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
+        this.enemiesTierFive.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
+        this.enemiesTierSix.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
 
+        const oozeMuddy = this.physics.add.group({
+            classType: OozeMuddy,
+            createCallback: (gameObject) => {
+                gameObject.body.collideWorldBounds=true;
+                gameObject.body.onCollide = true;
+                gameObject.setPlayer(this.knight);
+                gameObject.callbackColorChange();
+            }
+        })
+        this.enemiesTierFive.push({group: oozeMuddy, name: "ooze-muddy", spawnLayer: phasingEnemySpawnPoints});
+        this.enemiesTierSix.push({group: oozeMuddy, name: "ooze-muddy", spawnLayer: phasingEnemySpawnPoints});
+
+        //update score when enemy is defeated
+        sceneEvents.on(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
+        //count timer
+        sceneEvents.on(eventNames.halfSecondTimer, this.countTowardsEnemySpawn, this);
+
+        //runs every half a second for time-related stuff, to avoid using update
+        this.halfSecondTimerEvent = this.time.addEvent({
+            delay: 500,
+            callback: () => {
+                sceneEvents.emit(eventNames.halfSecondTimer);
+            },
+            loop: true
+        })
+
+        this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+            sceneEvents.off(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
+            sceneEvents.off(eventNames.halfSecondTimer, this.countTowardsEnemySpawn, this);
+            this.scene.stop("game-ui");
+            this.halfSecondTimerEvent.destroy();
+        })
 
         this.physics.add.collider(this.knight, wallsLayer);
         this.physics.add.collider(goblins, wallsLayer);
         this.physics.add.collider(ogres, wallsLayer);
         this.physics.add.collider(demons, wallsLayer);
         this.physics.add.collider(necromancers, wallsLayer);
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this);
         this.physics.add.collider(ogres, this.knight, this.handleEnemyCollisions, undefined, this);
@@ -285,6 +447,9 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(demonBigs, wallsLayer);
         this.physics.add.collider(demonSmalls, wallsLayer);
 
+=======
+        this.physics.add.collider(zombieIce, wallsLayer);
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         //knives hit walls
         this.physics.add.collider(knives, wallsLayer, this.handleProjectileWallCollision, undefined, this);
         this.physics.add.collider(energyBall, wallsLayer, this.handleProjectileWallCollision, undefined, this);
@@ -297,11 +462,14 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(knives, oozeSwampy, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, oozeMuddy, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, zombieIce, this.handleProjectileHit, undefined, this);
+<<<<<<< HEAD
         this.physics.add.collider(knives, skeletons, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, zombies, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, orcMaskeds, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, demonBigs, this.handleProjectileHit, undefined, this);
         this.physics.add.collider(knives, demonSmalls, this.handleProjectileHit, undefined, this);
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 
         //stores all the enemy collisions in an array, to be deleted when the player dies
         this.playerEnemyCollisionArray.push(this.physics.add.collider(goblins, this.knight, this.handleEnemyCollisions, undefined, this));
@@ -311,11 +479,14 @@ export default class Game extends Phaser.Scene {
         this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeSwampy, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(oozeMuddy, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(zombieIce, this.knight, this.handleEnemyCollisions, undefined, this));
+<<<<<<< HEAD
         this.playerEnemyCollisionArray.push(this.physics.add.collider(skeletons, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(zombies, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(orcMaskeds, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(demonBigs, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(demonSmalls, this.knight, this.handleEnemyCollisions, undefined, this));
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         //enemy projectiles hit player
         this.playerEnemyCollisionArray.push(this.physics.add.collider(energyBall, this.knight, this.handleEnemyProjectileHit, undefined, this));
 
@@ -344,17 +515,29 @@ export default class Game extends Phaser.Scene {
 
         //stops
         if(player.health <= 0){
+<<<<<<< HEAD
             this.playerEnemyCollisionArray = [];
+=======
+            this.playerEnemyCollisionArray.destroy();
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         }
 
         projectile.destroy();
     }
 
+<<<<<<< HEAD
     handleProjectileWallCollision(projectile, wall){
         projectile.destroy();
 >>>>>>> Stashed changes
+=======
+
+
+    handleProjectileWallCollision(projectile, wall){
+        projectile.destroy();
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
     }
 
+    //for when the player collides with an enemy
     handleEnemyCollisions(player, enemy){
         let directionX = player.x - enemy.x;
         let directionY = player.y - enemy.y;
@@ -362,9 +545,109 @@ export default class Game extends Phaser.Scene {
         let directionalVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(enemy.knockBack);
 
         this.knight.takeDamage(directionalVector, enemy.damage);
+
+        sceneEvents.emit(eventNames.playerHealthChanged, this.knight.health);
+
+        //stops
+        if(player.health <= 0){
+            this.playerEnemyCollisionArray = [];
+            //delay before going to game over screen
+            this.time.addEvent({
+                delay: 3000,
+                callback: () => {
+                    this.gameOver()
+                }
+            })
+        }
     }
 
-    update(){
+    gameOver(){
+        this.scene.start("gameOverScreen")
+    }
+
+    //called as an event
+    handleEnemyDefeated(points){
+        this.score += points;
+        this.currentSpawingTimer += this.enemyDeathTimerReduction;
+        this.currentEnemyCount -= 1;
+        sceneEvents.emit(eventNames.scoreUpdated, this.score)
+    }
+
+    spawnNewSetOfEnemies(){
+        //store array of the current 
+        var selectedEnemyArray;
+        //pick which enemy array to use
+        if(this.score < this.enemyStrengthScoreThreshold[0]){
+            selectedEnemyArray = this.enemiesTierOne;
+        }else if(this.score < this.enemyStrengthScoreThreshold[1]){
+            selectedEnemyArray = this.enemiesTierTwo;
+        }else if(this.score < this.enemyStrengthScoreThreshold[2]){
+            selectedEnemyArray = this.enemiesTierThree;
+        }else if(this.score < this.enemyStrengthScoreThreshold[3]){
+            selectedEnemyArray = this.enemiesTierFour;
+        }else if(this.score < this.enemyStrengthScoreThreshold[4]){
+            selectedEnemyArray = this.enemiesTierFive;
+        }else{
+            selectedEnemyArray = this.enemiesTierSix;
+        }
+        
+        //spawn an enemy for each it tells you to
+        for(let i = 0; i < this.enemiesInWave; i++){
+            selectedEnemyArray = this.randomArrayShuffle(selectedEnemyArray);
+            this.spawnInRandomPosition(selectedEnemyArray[0].group, selectedEnemyArray[0].name, selectedEnemyArray[0].spawnLayer);
+        }
+
+        this.currentSpawingTimer = 0;
+    }
+
+    //get the position to spawn
+    spawnInRandomPosition(enemyType, enemyName, positionObjectLayer){
+        //randomize order
+        const shuffledArray = this.randomArrayShuffle(positionObjectLayer.objects);
+
+        //check spawn point is far enough from player
+        for(let i = 0; i < shuffledArray.length; i++){
+            let distance = Phaser.Math.Distance.Between(shuffledArray[i].x, shuffledArray[i].y, this.knight.x, this.knight.y);
+            if(distance >= this.minimumSpawnDistance){
+                this.spawnEnemy(enemyType, enemyName, shuffledArray[i]);
+                break;
+            }
+        }
+    }
+
+    //spawns an enemy
+    spawnEnemy(enemyType, enemyName, enemySpawnPositionObject){
+        //enemySpawnPositionObject is offset by half the height and width to accomidate for Tiled positioning issues
+        let newEnemy = enemyType.get(enemySpawnPositionObject.x + (enemySpawnPositionObject.width * 0.5), 
+            enemySpawnPositionObject.y - (enemySpawnPositionObject.height * 0.5), enemyName);
+        this.currentEnemyCount += 1;
+    }
+
+    countTowardsEnemySpawn(){
+        this.currentSpawingTimer += 500;
+
+        //it will only spawn new enemies if the player is alive, and enemy count is not at max
+        if(!this.knight.isDead && this.currentEnemyCount < this.maxEnemyCount){
+            if(this.currentSpawingTimer >= this.spawningThreshold){
+                this.spawnNewSetOfEnemies();
+            }
+        }
+    }
+
+    //used to help randomize spawn areas
+    randomArrayShuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+
+    update(time, deltaTime){
         if(this.knight){
             this.knight.update(this.cursors);
         }

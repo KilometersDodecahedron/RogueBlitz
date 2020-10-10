@@ -46,6 +46,22 @@ const createDemonAnims = anims => {
     });
 }
 
+const createDemonSmallAnims = anims => {
+    anims.create({
+        key: "demon-small-idle",
+        frames: anims.generateFrameNames("demon-small", {start: 0, end: 3, prefix: "imp_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "demon-small-run",
+        frames: anims.generateFrameNames("demon-small", {start: 0, end: 3, prefix: "imp_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
 const createNecromancerAnims = anims => {
     anims.create({
         key: "necromancer-idle",
@@ -62,7 +78,62 @@ const createNecromancerAnims = anims => {
     });
 }
 
+const createOozeSwampyAnims = anims => {
+    anims.create({
+        key: "ooze-swampy-idle",
+        frames: anims.generateFrameNames("ooze-swampy", {start: 0, end: 3, prefix: "swampy_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
 
+    anims.create({
+        key: "ooze-swampy-run",
+        frames: anims.generateFrameNames("ooze-swampy", {start: 0, end: 3, prefix: "swampy_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
+const createZombieIceAnims = anims => {
+    anims.create({
+        key: "zombie-ice-idle",
+        frames: anims.generateFrameNames("zombie-ice", {start: 0, end: 3, prefix: "ice_zombie_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "zombie-ice-run",
+        frames: anims.generateFrameNames("zombie-ice", {start: 0, end: 3, prefix: "ice_zombie_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
+const createOozeMuddyAnims = anims => {
+    anims.create({
+        key: "ooze-muddy-idle",
+        frames: anims.generateFrameNames("ooze-muddy", {start: 0, end: 3, prefix: "muddy_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "ooze-muddy-run",
+        frames: anims.generateFrameNames("ooze-muddy", {start: 0, end: 3, prefix: "muddy_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
+const createEnergyBallAnims = anims => {
+    anims.create({
+        key: "energy-ball",
+        frames: anims.generateFrameNames("energy-ball", {start: 1, end: 8, prefix: "energy-ball-", suffix: ".png"}),
+        frameRate: 20,
+        repeat: -1
+    })
+}
 
 const createSkeletonAnims = anims => {
     anims.create({
@@ -132,18 +203,25 @@ export {
     createGoblinAnims,
     createOgreAnims,
     createDemonAnims,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     createNecromancerAnims
 =======
+=======
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
     createNecromancerAnims,
     createDemonSmallAnims,
     createOozeSwampyAnims,
     createOozeMuddyAnims,
     createEnergyBallAnims,
+<<<<<<< HEAD
     createZombieIceAnims,
     createSkeletonAnims,
     createZombieAnims,
     createOrcMaskedAnims,
     createDemonBigAnims
 >>>>>>> Stashed changes
+=======
+    createZombieIceAnims
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
 }

@@ -23,6 +23,11 @@ const createPlayerAnims = (anims) => {
         frameRate: 12,
         repeat: -1
     });
+
+    anims.create({
+        key: "tombstone",
+        frames: [{key: "tombstone"}]
+    })
 }
 
 export {

@@ -4,8 +4,13 @@ export default class ZombieIce extends ShootingEnemy{
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
 
+<<<<<<< HEAD
         this.health = 5;
         this.speed = 35;
+=======
+        this.health = 15;
+        this.speed = 45;
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         this.damage = 1;
         this.knockBack = 175;
 
@@ -25,7 +30,11 @@ export default class ZombieIce extends ShootingEnemy{
         this.movesFromTheStart = true;
         this.canBeStill = true;
         this.canMoveDiagonally = true;
+<<<<<<< HEAD
         this.pointValue = 10;
+=======
+
+>>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
         this.descendantStartMethod();
     }
 
