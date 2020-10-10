@@ -2,6 +2,7 @@ import Preloader from "./scenes/Preloader.js";
 import Game from "./scenes/Game.js";
 import GameUI from "./scenes/GameUI.js";
 import Menu from "./scenes/Menu.js"
+import GameOverScreen from "./scenes/GameOverScreen.js"
 
 const config = {
     type: Phaser.AUTO,
@@ -17,7 +18,8 @@ const config = {
     },
 
     //add Menu class first once button is built
-    scene: [Menu, Preloader, Game, GameUI],
+    scene: [Preloader, Menu, Game, GameUI, GameOverScreen],
+
     plugins: {
         scene: [
             {
