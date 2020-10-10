@@ -21,11 +21,8 @@ export default class OozeMuddy extends FollowingGhostEnemy {
         this.playerCheckInterval = 150;
         //how often to check for the player's position while chasing
         this.directionCheckInterval = 1000;
-<<<<<<< HEAD
 
         this.pointValue = 60;
-=======
->>>>>>> 9a5c460bde55383f21b8bd849d3d4bba6df73aaa
     }
 
     preUpdate(time, deltaTime){
