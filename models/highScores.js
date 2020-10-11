@@ -2,7 +2,7 @@ var orm = require("../config/orm.js");
 
 var score = {
   getAllScores: function(cb) {
-    orm.all("high_scores", function(res) {
+    orm.all("high_scores ORDER BY score DESC LIMIT 10", function(res) {
       cb(res);
     });
   },
