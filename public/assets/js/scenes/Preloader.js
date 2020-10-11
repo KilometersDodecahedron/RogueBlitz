@@ -36,9 +36,20 @@ export default class oader extends Phaser.Scene {
         this.load.image("ui-heart-full", "../assets/img/ui/ui_heart_full.png");
         this.load.image("ui-heart-half", "../assets/img/ui/ui_heart_half.png");
         this.load.image("ui-heart-empty", "../assets/img/ui/ui_heart_empty.png");
+
+        //ui and backgrounds
+        this.load.image("Menubackground", "../assets/img/pics/Menubackground.png");
     }
 
     create() {
-        this.scene.start('game');
+        // $.ajax({
+        //     url: "/api/highScores",
+        //     type: "GET"
+        // }).then(
+        //     function(response) {
+        //         console.log(response)
+        //     }
+        // );
+        this.scene.start('menu');
     }
 }
