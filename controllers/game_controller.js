@@ -18,9 +18,7 @@ router.get("/api/highScores", (req, res) => {
 
 //call and give data an object that has 'id' and 'score' properties
 router.post("/api/highScores/newHighScore", (req, res) => {
-    highScores.creatNewBurger(req.body.score, req.body.id, (result) => {
-        //I THINK insertId is built into it, to show the id of the last post
-        //res.json({ id: result.insertId });
+    highScores.createNewHighScore([req.body.score], (result) => {
         res.status(200).end();
     });
 });

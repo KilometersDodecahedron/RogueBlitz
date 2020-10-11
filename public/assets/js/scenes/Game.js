@@ -435,7 +435,19 @@ export default class Game extends Phaser.Scene {
 
     gameOver(){
         //sceneEvents.destroy();
-        this.scene.start("gameOverScreen", {score: this.score});
+        $.ajax({
+            url: "/api/highScores",
+            type: "GET",
+            //set the "success" to fun in this context, to get the next scene
+            context: this,
+            success: function(highScoreArray) {
+                this.scene.start("gameOverScreen", {
+                    score: this.score,
+                    highScoreArray: highScoreArray
+                });
+            }
+        });
+        
     }
 
     //called as an event
