@@ -6,12 +6,8 @@ export default class Menu extends Phaser.Scene {
         this.play;
         this.scores;
     }
-    preload()
-    {
-    	this.load.image("Menubackground", "../assets/img/pics/Menubackground.png");
-    }
+    
     create() {
-
         //background image
         this.Menubackground = this.add.image( 400, 280, "Menubackground");
         this.Menubackground.setScale(1.25,1.7)
@@ -33,9 +29,20 @@ export default class Menu extends Phaser.Scene {
         this.scores=this.add.text(2,.75,"HIGH SCORES",scoresConfig);
         this.scores.setOrigin(-.92,-7.43);
         r1.setInteractive();
-        r1.on('pointerdown', () => { this.scene.start('preloader');});
+        r1.on('pointerdown', () => { this.scene.start('game');});
         r2.setInteractive();
-        r2.on('pointerdown', () => { this.scene.start('scores');});
-        console.log("Ready!");
+        //making the ajax call to get High Score data to be passed into the next scene
+        r2.on('pointerdown', () => { 
+            $.ajax({
+                url: "/api/highScores",
+                type: "GET",
+                //set the "success" to fun in this context, to get the next scene
+                context: this,
+                success: function(highScoreArray) {
+                    this.scene.start('scores', highScoreArray);
+                }
+            });
+            ;
+        });
     }
 }

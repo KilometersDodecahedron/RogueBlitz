@@ -435,7 +435,7 @@ export default class Game extends Phaser.Scene {
 
     gameOver(){
         //sceneEvents.destroy();
-        this.scene.start("gameOverScreen")
+        this.scene.start("gameOverScreen", {score: this.score});
     }
 
     //called as an event
@@ -467,7 +467,6 @@ export default class Game extends Phaser.Scene {
         //spawn an enemy for each it tells you to
         for(let i = 0; i < this.enemiesInWave; i++){
             selectedEnemyArray = this.randomArrayShuffle(selectedEnemyArray);
-            console.log(selectedEnemyArray);
             this.spawnInRandomPosition(selectedEnemyArray[0].group, selectedEnemyArray[0].name, selectedEnemyArray[0].spawnLayer);
         }
 
@@ -491,8 +490,6 @@ export default class Game extends Phaser.Scene {
 
     //spawns an enemy
     spawnEnemy(enemyType, enemyName, enemySpawnPositionObject){
-        console.log(enemyType + " " + enemyName);
-        console.log(enemySpawnPositionObject)
         //enemySpawnPositionObject is offset by half the height and width to accomidate for Tiled positioning issues
         let newEnemy = enemyType.get(enemySpawnPositionObject.x + (enemySpawnPositionObject.width * 0.5), 
             enemySpawnPositionObject.y - (enemySpawnPositionObject.height * 0.5), enemyName);
