@@ -133,7 +133,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
 
         const data = this.getAttackAngle();
         
-        const knife = this.knives.get(this.x, this.y, "knife");
+        const knife = this.knives.get(this.x, this.y + 7, "knife");
         knife.setRotation(data.angle);
         knife.damage = this.attackDamage;
         knife.knockback = this.throwKnockbackFast;
