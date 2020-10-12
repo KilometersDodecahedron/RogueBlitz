@@ -7,16 +7,16 @@ import Scores from "./scenes/Scores.js"
 
 const config = {
     type: Phaser.AUTO,
-    width: 700,
-    height: 460,
+    width: 800,
+    height: 560,
     autoCenter: true,
     parent: 'mygame',
     physics: {
         default: "arcade",
         arcade: {
             //Top-Down game. No Gravity needed
-            gravity: { y: 0 },
-            debug: true
+            gravity: { y: 0 }
+            //,debug: true
         }
     },
 
