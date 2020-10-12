@@ -45,7 +45,7 @@ export default class Game extends Phaser.Scene {
         this.score = 0;
         this.gameUI;
         //how many points you need before stronger enemies spawn
-        this.enemyStrengthScoreThreshold = [100, 300, 700, 1500, 3000];
+        this.enemyStrengthScoreThreshold = [100, 240, 560, 1200, 2400];
         //these 3 variables manage enemy spawning
         this.spawningThreshold = 40000;
         this.enemyDeathTimerReduction = 5000;
