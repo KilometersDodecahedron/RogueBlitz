@@ -5,13 +5,13 @@ export default class Skeleton extends RandomlyMovingEnemy {
         super(scene, x, y, texture, frame);
         this.health = 5;
         this.damage = 1;
-        this.speed = 85;
+        this.speed = 95;
         this.knockBack = 150;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 10;
+        this.pointValue = 15;
         this.descendantStartMethod();
     }
 

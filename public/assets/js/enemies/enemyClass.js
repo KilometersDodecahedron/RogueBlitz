@@ -131,9 +131,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
         if(this.directionTracker.right){
             this.setVelocityX(this.speed);
+            this.flipX = false;
             this.anims.play(runAnimName, true);
         }else if(this.directionTracker.left){
             this.setVelocityX(-this.speed);
+            this.flipX = true;
             this.anims.play(runAnimName, true);
         }
 

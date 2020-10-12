@@ -5,7 +5,7 @@ export default class OozeMuddy extends FollowingGhostEnemy {
         super(scene, x, y, texture, frame);
 
         this.health = 10;
-        this.speed = 140;
+        this.speed = 90;
         this.damage = 1;
         this.knockBack = 400;
 
@@ -22,7 +22,7 @@ export default class OozeMuddy extends FollowingGhostEnemy {
         //how often to check for the player's position while chasing
         this.directionCheckInterval = 1000;
 
-        this.pointValue = 60;
+        this.pointValue = 70;
     }
 
     preUpdate(time, deltaTime){

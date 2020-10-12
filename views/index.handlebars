@@ -1,20 +1,123 @@
-<script type="module" src="/assets/js/mainGame.js" defer></script>
-
-<div class="container">
-    <div class="jumbotron">
-        <h1 class="display-2">RogueBlitz</h1>
+<header>
+    <div class="jumbotron text-center">
+        <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8 offset-xs-3 float-md-center"></div>
+        <div class="page-header">
+            <h1>RogueBlitz</h1>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-sm-2">
-            <div class="card">
-                <div class="card-header">
+</header>
 
-                    <h2>How To Play</h2>
-                    <p>Arrow Keys -Move</p>
-                    <p>Space Bar - Attack</p>
-                    <p>Key C : Item One</p>
-                    <p>Key V : Item Two</p>
-                    <p>Key N : Item Three</p>
-                    <p>Key B : Item Four</p>
 
-                    <script type="module" src="/assets/js/mainGame.js" defer></script>
+<section>
+    <div class="container-lg">
+        <div class="card-body text-muted">
+
+            <h3>
+                <center> <strong>Your Journey Awaits! </strong> </center>
+            </h3>
+            <p>
+                In a dungeon thats full of creatures from another dimension in the underworld. The player, who's been
+                distinguish as a dishonered warrior turn his tables on fate and walked the path of being a rogue.
+                This gives players the opportunity to play a game that has; no chance for life, but a chance for glory!
+            </p>
+        </div>
+    </div>
+
+    <div id="mygame">
+        <script type="module" src="/assets/js/mainGame.js" defer></script>
+    </div>
+
+</section>
+
+<aside id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-muted">Contact Us</h2>
+                <h3 class="section-subheading text-muted">Want to make games like us? <br>
+                    Ask us Questions.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <form name="sentMessage" id="contactForm" novalidate="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Your Name *" id="name" required=""
+                                    data-validation-required-message="Please enter your name.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Your Email *" id="email"
+                                    required="" data-validation-required-message="Please enter your email address.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" class="form-control" placeholder="Your Phone *" id="phone" required=""
+                                    data-validation-required-message="Please enter your phone number.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Your Message *" id="message" required=""
+                                    data-validation-required-message="Please enter a message."></textarea>
+                                <button type="submit" class="btn">Send Message</button>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</aside>
+
+
+<div id="wrapper">
+    <div id="content">
+        <ul id="team">
+            <li>
+                <img src="../img/pics/Miles.jpg" alt="Miles">
+                <div class="movieinfo">
+                    <h3>Miles Cohn</h3>
+                    <p>needs update</p>
+                    <a href="https://github.com/KilometersDodecahedron" title="Miles">Portfolio</a>
+                </div>
+            </li>
+            <li>
+                <img src="../img/pics/Troy" alt="Troy">
+                <div class="movieinfo">
+                    <h3>Troy Berentsen</h3>
+                    <p>needs update</p>
+                    <a href="https://tmbx9482.github.io/My-Portfolio-Page/" title="Troy">Portfolio</a>
+                </div>
+            </li>
+            <li>
+                <img src="../img/pics/Chris" alt="Chris">
+                <div class="movieinfo">
+                    <h3>Chris Crook</h3>
+                    <p>needs update</p>
+                    <a href="https://github.com/chrissy613/Portfolio" title="Chris">Portfolio</a>
+                </div>
+            </li>
+            <li>
+                <img src="../img/pics/Carlos" alt="Carlos">
+                <div class="movieinfo">
+                    <h3>Carlos Benitez</h3>
+                    <p>needs update</p>
+                    <a href="https://carlosbenitez.github.io/Portfolio/" title="Carlos">Portfolio</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <bigger>Developed by: Troy Berentsen, Miles Cohn, Christopher Crook, and Carlos Benitez
+            <br>
+            &copy; 2020 🐱‍🏍🖱💻
+        </bigger>
+    </p>
+</footer>

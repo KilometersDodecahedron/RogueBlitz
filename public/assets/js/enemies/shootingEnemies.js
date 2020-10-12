@@ -92,6 +92,14 @@ export default class ShootingEnemy extends RandomlyMovingEnemy{
         projectile.setScale(0.07, 0.07).setCircle(100);
         projectile.anims.play("energy-ball", true);
         projectile.tint = this.shotColor;
+
+        //make sure the enemy is facing the player when shooting at them
+        if(this.thePlayer.x < this.x){
+            this.flipX = true;
+        }else{
+            this.flipX = false;
+        }
+
         this.currentScene.physics.velocityFromRotation(angle, speed, projectile.body.velocity);
     }
 }
