@@ -7,8 +7,8 @@ import Scores from "./scenes/Scores.js"
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 560,
+    width: 700,
+    height: 460,
     autoCenter: true,
     parent: 'mygame',
     physics: {

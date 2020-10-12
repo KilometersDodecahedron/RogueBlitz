@@ -1,6 +1,6 @@
 body {
         color: #FFFFFF;
-        background-image: linear-gradient(43deg, #DA0505 0%, #000000 56%, #FF0306 100%);
+        background-image: linear-gradient(43deg, #cc07f3 0%, #000000 56%, #FF0306 100%);
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -17,23 +17,30 @@ header {
 .jumbotron {
 color: #FF0306;
 background: url(../img/pics/backround.gif);
-background-color: #e9ecef;
-border-radius: .3rem;
-padding: 2rem 1rem;
-margin-bottom: 2rem;
+padding: 3rem;
+margin-bottom: 1em;
 }
 
-@media (min-width: 576px)
-{.jumbotron {
-    padding: 4rem 2rem;
-}
+
 
 
 #contact {
   float: right;
-  
-    
+  padding-top: 1em;
+  padding-right: 1em;
 }
+
+
+
+/*--- Storyline ---*/
+
+card-body {
+float: left;
+object-position: 35px, 34%;
+position: absolute; left:80px; top:20px;
+
+}
+
 
 /*--- Footer Section ---*/
 
@@ -44,7 +51,7 @@ footer {
     width: 100%;
     height: 45px;
     margin-top: 10px;
-    background: #000000;
+    background: url(../img/pics/backround.gif);
     font-family: 'Times New Roman', Times, serif;
     text-align: center;
   }
