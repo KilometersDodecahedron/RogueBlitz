@@ -11,7 +11,7 @@ export default class Zombie extends RandomlyMovingEnemy {
         this.movesFromTheStart = true;
         this.canBeStill = false;
         this.canMoveDiagonally = true;
-        this.pointValue = 20;
+        this.pointValue = 25;
         this.descendantStartMethod();
     }
 
