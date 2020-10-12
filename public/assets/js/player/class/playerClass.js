@@ -18,6 +18,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             left: false,
         }
 
+        this.lastKeyboardInput = "right";
+
         //used to stop player while attacking
         this.attackTimer = 0;
         this.attackingState = false;
@@ -139,7 +141,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         knife.setVelocity(data.vector.x * this.throwSpeedFast, data.vector.y * this.throwSpeedFast);
         knife.body.velocity.normalize().scale(this.throwSpeedFast);
 
-        if(this.diectionInputHolder.up || this.diectionInputHolder.down){
+        if(this.diectionInputHolder.up || this.diectionInputHolder.down || this.lastKeyboardInput == 'down' || this.lastKeyboardInput == 'up'){
             knife.body.setSize(4, 6);
         }else{
             knife.body.setSize(6, 4);
@@ -166,9 +168,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             vector.x = -1;
         }else if(this.diectionInputHolder.right){
             vector.x = 1;
-        }else if(this.diectionInputHolder.up){
+        }else if(this.diectionInputHolder.up || this.lastKeyboardInput == "up"){
             vector.y = -1;
-        }else if(this.diectionInputHolder.down){
+        }else if(this.diectionInputHolder.down || this.lastKeyboardInput == "down"){
             vector.y = 1;
         }else if(this.flipX){
             vector.x = -1;
@@ -202,14 +204,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         //horizontal movement
         if(cursors.left?.isDown){
             this.setVelocityX(-this.speed);
+            this.lastKeyboardInput = "left";
         }else if(cursors.right?.isDown){
             this.setVelocityX(this.speed);
+            this.lastKeyboardInput = "right";
         }
 
         if(cursors.up?.isDown){
             this.setVelocityY(-this.speed);
+            this.lastKeyboardInput = "up";
         }else if(cursors.down?.isDown){
             this.setVelocityY(this.speed);
+            this.lastKeyboardInput = "down";
         }
 
         this.body.velocity.normalize().scale(this.speed);
