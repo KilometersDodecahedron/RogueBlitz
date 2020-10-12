@@ -19,7 +19,7 @@ export default class OozeSwampy extends FollowingGhostEnemy {
         //how often to check for the player's position while chasing
         this.directionCheckInterval = 500;
 
-        this.pointValue = 45;
+        this.pointValue = 50;
     }
 
     preUpdate(time, deltaTime){

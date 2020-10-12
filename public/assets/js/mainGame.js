@@ -21,7 +21,7 @@ const config = {
     },
 
     //add Menu class first once button is built
-    scene: [Menu, Preloader, Game, GameUI, GameOverScreen, Scores],
+    scene: [Preloader, Menu, Game, GameUI, GameOverScreen, Scores],
 
     plugins: {
         scene: [

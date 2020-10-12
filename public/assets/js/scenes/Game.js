@@ -40,7 +40,7 @@ export default class Game extends Phaser.Scene {
         //store refernce to the collider so it can be deleted when player dies
         this.playerEnemyCollisionArray = [];
         //make sure enemies don't spawn on top of player
-        this.minimumSpawnDistance = 80;
+        this.minimumSpawnDistance = 100;
         //track the player's score
         this.score = 0;
         this.gameUI;
@@ -83,6 +83,9 @@ export default class Game extends Phaser.Scene {
     create() {
         //add health bar
         this.gameUI = this.scene.run('game-ui');
+
+        //runs when loading game again after restart to reset everything
+        this.resetClassVariables();
 
         //add animations
         createPlayerAnims(this.anims);
@@ -370,7 +373,7 @@ export default class Game extends Phaser.Scene {
 
         //enemy projectiles hit player
         this.playerEnemyCollisionArray.push(this.physics.add.collider(energyBall, this.knight, this.handleEnemyProjectileHit, undefined, this));
-
+        
         this.spawnNewSetOfEnemies();
     }
 
@@ -431,7 +434,20 @@ export default class Game extends Phaser.Scene {
     }
 
     gameOver(){
-        this.scene.start("gameOverScreen")
+        //sceneEvents.destroy();
+        $.ajax({
+            url: "/api/highScores",
+            type: "GET",
+            //set the "success" to fun in this context, to get the next scene
+            context: this,
+            success: function(highScoreArray) {
+                this.scene.start("gameOverScreen", {
+                    score: this.score,
+                    highScoreArray: highScoreArray
+                });
+            }
+        });
+        
     }
 
     //called as an event
@@ -514,6 +530,20 @@ export default class Game extends Phaser.Scene {
           array[randomIndex] = temporaryValue;
         }
         return array;
+    }
+
+    //run this when you leave the scene
+    resetClassVariables(){
+        this.playerEnemyCollisionArray = [];
+        this.score = 0;
+        this.currentSpawingTimer = 0;
+        this.currentEnemyCount = 0;
+        this.enemiesTierOne = [];
+        this.enemiesTierTwo = [];
+        this.enemiesTierThree = [];
+        this.enemiesTierFour = [];
+        this.enemiesTierFive = [];
+        this.enemiesTierSix = [];
     }
 
     update(time, deltaTime){
