@@ -400,6 +400,12 @@ export default class Game extends Phaser.Scene {
         //stops
         if(player.health <= 0){
             this.playerEnemyCollisionArray = [];
+            this.time.addEvent({
+                delay: 3000,
+                callback: () => {
+                    this.gameOver()
+                }
+            })
         }
 
         projectile.destroy();
