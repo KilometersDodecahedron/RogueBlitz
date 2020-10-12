@@ -1,19 +1,20 @@
 var mysql = require("mysql");
 var connection;
 
-if(process.env.JAWSDB_URL){
+if (process.env.JAWSDB_URL) {
   connection = mysql.createConnection(process.env.JAWSDB_URL);
-}else{
+} else {
   connection = mysql.createConnection({
-  host: "localhost",
-  port: process.env.PORT || 3306,
-  user: "root",
-  password: "wJfGSO1F0hzx",
-  database: "rogueBlitz_db"
-});
+    host: "localhost",
+    port: process.env.PORT || 3306,
+    user: "root",
+    /* Put in your password here */
+    password: "password",
+    database: "rogueBlitz_db"
+  });
 }
 
-connection.connect(function(err) {
+connection.connect(function (err) {
   if (err) {
     console.error("error connecting: " + err.stack);
     return;

@@ -15,15 +15,25 @@ header {
 }
 
 .jumbotron {
-color: #FF0306;
+color: firebrick;
 background: url(../img/pics/backround.gif);
 padding: 3rem;
 margin-bottom: 1em;
 }
 
+/* Contacts */
 
 
+.btn {
+  color: firebrick;
+  background: url(../img/pics/backround.gif);
+  display: inline;
+}
 
+.btn :hover
+{
+  color: #cc07f3;
+}
 #contact {
   float: right;
   padding-top: 1em;
@@ -35,12 +45,35 @@ margin-bottom: 1em;
 /*--- Storyline ---*/
 
 card-body {
-float: left;
-object-position: 35px, 34%;
-position: absolute; left:80px; top:20px;
+float: center;
+flex: 1 1 auto;
+min-height: 3px;
+padding: 2em;
+border: 4mm ridge rgba(170, 50, 220, .6);
+background-color: #000000;
 
 }
 
+/* Team */
+
+#team {
+  list-style: none;
+  margin: 100px 0;
+  height: 550px;
+}
+
+#team li img {
+  border: 10px solid #fcfafa;
+  transform: rotateY(30deg);
+  box-shadow: 0 3px 10px #888;
+  box-shadow: 0 3px 10px #888;
+  transition-property: transform;
+  transition-duration: 0.5s;
+}
+
+#team li:hover img {
+  transform: rotateY(0deg);
+}
 
 /*--- Footer Section ---*/
 
