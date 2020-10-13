@@ -1,3 +1,7 @@
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
         color: #FFFFFF;
         background-image: linear-gradient(43deg, #cc07f3 0%, #000000 56%, #FF0306 100%);
@@ -5,7 +9,8 @@ body {
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
-        font-family: 'Times New Roman', Times, serif
+        font-family: 'Arimo', sans-serif;
+        font-family: 'Sansita Swashed', cursive;
     }
 
 
@@ -15,78 +20,122 @@ header {
 }
 
 .jumbotron {
-color: firebrick;
+color: black;
+text-shadow: 1px 1px 2px whitesmoke, 0 0 25px blueviolet, 0 0 5px firebrick;
 background: url(../img/pics/backround.gif);
 padding: 3rem;
 margin-bottom: 1em;
+margin-right: -2em;
+
 }
 
 /* Contacts */
 
-
-.btn {
-  color: firebrick;
-  background: url(../img/pics/backround.gif);
-  display: inline;
-}
-
-.btn :hover
-{
-  color: #cc07f3;
-}
 #contact {
   float: right;
-  padding-top: 1em;
-  padding-right: 1em;
+  padding-top: 0em;
+  padding-right: 6em;
 }
 
-
+.btnbtn {
+  background: url(../img/pics/backround.gif);
+  float: right;
+  color: firebrick;
+}
 
 /*--- Storyline ---*/
 
-card-body {
+.card-body {
 float: center;
 flex: 1 1 auto;
 min-height: 3px;
+text-decoration: dashed;
+text-align: center;
 padding: 2em;
-border: 4mm ridge rgba(170, 50, 220, .6);
+border: 4mm ridge blueviolet;
 background-color: #000000;
+border-block-end-color: firebrick;
+border-right-color: firebrick;
 
 }
 
 /* Team */
 
+.text-light {
+  margin-right: -13px;
+}
+
 #team {
-  list-style: none;
-  margin: 100px 0;
-  height: 550px;
+  color: #000000;
+  text-align: center;
+  padding-left: 1px;
 }
 
-#team li img {
-  border: 10px solid #fcfafa;
-  transform: rotateY(30deg);
-  box-shadow: 0 3px 10px #888;
-  box-shadow: 0 3px 10px #888;
-  transition-property: transform;
-  transition-duration: 0.5s;
+/* Three columns side by side */
+.column {
+  float: left;
+  width: 40.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
 }
 
-#team li:hover img {
-  transform: rotateY(0deg);
+/* Display the columns below each other instead of side by side on small screens */
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add some shadows to create a card effect */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border: solid blueviolet;
+    border-block-end-width: revert;
+    border-block-start-color: red;
+}
+
+/* Some left and right padding inside the container */
+.container {
+  padding: 0 16px;
+  padding-left: 67px;
+  margin-block-end: 14px;
+}
+
+/* Clear floats */
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background: url(../img/pics/backround.gif);
+  text-align: center;
+  cursor: pointer;
+  width: 83%;
 }
 
 /*--- Footer Section ---*/
 
 footer {
-    position: fixed;
     bottom: 0;
     padding: 0;
     width: 100%;
-    height: 45px;
-    margin-top: 10px;
+    height: 65px;
     background: url(../img/pics/backround.gif);
     font-family: 'Times New Roman', Times, serif;
     text-align: center;
+    padding-right: 1em;
   }
   
   footer p {
