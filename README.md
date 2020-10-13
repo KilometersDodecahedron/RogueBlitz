@@ -83,7 +83,7 @@ run node server.js or nodomon
 * Feel free to message Troy at troyberentsen94@gmail.com and or use the contacts resource on our projects page to send us your thoughs, ideas, and what your looking to create!  
 
 # Link📶🤳
-[RogueBlitz](https://calm-plains-46392.herokuapp.com/)
+Try the game here ==> [RogueBlitz](https://calm-plains-46392.herokuapp.com/)
 
 # Screenshots📸
 ![RogueBlitz](https://user-images.githubusercontent.com/62157127/95813318-9adab280-0ce5-11eb-82b9-4bb629b42d1f.png)
