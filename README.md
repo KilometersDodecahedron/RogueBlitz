@@ -26,7 +26,6 @@
 
 [Contributors](#Contributors)
 
-[You can play the game for yourself at theis link](https://calm-plains-46392.herokuapp.com/)
 
 # Description📋
 For this project, we were tasked with creating an application using MySQL, Node, Espress, Handlebars and create an ORM.  Giving this infomation we were to follow the MVC design pattern whiling making a game using APi's and programs with packages. Futhermore, using Node and MySQL to query and route data, and Handlebars to generate our HTML and CSS. For more details about the game check out " A Rogue's Story ".
@@ -84,7 +83,7 @@ run node server.js or nodomon
 * Feel free to message Troy at troyberentsen94@gmail.com and or use the contacts resource on our projects page to send us your thoughs, ideas, and what your looking to create!  
 
 # Link📶🤳
-RogueBlitz : 
+[RogueBlitz](https://calm-plains-46392.herokuapp.com/)
 
 # Screenshots📸
 ![RogueBlitz](https://user-images.githubusercontent.com/62157127/95813318-9adab280-0ce5-11eb-82b9-4bb629b42d1f.png)
