@@ -26,6 +26,8 @@
 
 [Contributors](#Contributors)
 
+[You can play the game for yourself at theis link](https://calm-plains-46392.herokuapp.com/)
+
 # Description📋
 For this project, we were tasked with creating an application using MySQL, Node, Espress, Handlebars and create an ORM.  Giving this infomation we were to follow the MVC design pattern whiling making a game using APi's and programs with packages. Futhermore, using Node and MySQL to query and route data, and Handlebars to generate our HTML and CSS. For more details about the game check out " A Rogue's Story ".
 
