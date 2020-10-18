@@ -2,7 +2,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         
-        this.health = 6;
+        this.health = 8;
         this.attackDamage = 5; 
         this.speed = 125;
 

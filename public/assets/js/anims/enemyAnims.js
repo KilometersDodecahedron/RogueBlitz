@@ -199,6 +199,38 @@ const createDemonBigAnims = anims => {
     });
 }
 
+const createZombieBigAnims = anims => {
+    anims.create({
+        key: "zombie-big-idle",
+        frames: anims.generateFrameNames("zombie-big", {start: 0, end: 3, prefix: "big_zombie_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "zombie-big-run",
+        frames: anims.generateFrameNames("zombie-big", {start: 0, end: 3, prefix: "big_zombie_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
+const createWogolAnims = anims => {
+    anims.create({
+        key: "wogol-idle",
+        frames: anims.generateFrameNames("wogol", {start: 0, end: 3, prefix: "wogol_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "wogol-run",
+        frames: anims.generateFrameNames("wogol", {start: 0, end: 3, prefix: "wogol_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
 export {
     createGoblinAnims,
     createOgreAnims,
@@ -212,5 +244,7 @@ export {
     createSkeletonAnims,
     createZombieAnims,
     createOrcMaskedAnims,
-    createDemonBigAnims
+    createDemonBigAnims,
+    createWogolAnims,
+    createZombieBigAnims
 }

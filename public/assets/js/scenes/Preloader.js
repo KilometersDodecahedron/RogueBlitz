@@ -28,6 +28,8 @@ export default class oader extends Phaser.Scene {
         this.load.atlas("zombie", "../assets/img/enemies/zombie.png", "../assets/json/enemies/zombie.json");
         this.load.atlas("orc-masked", "../assets/img/enemies/orc-masked.png", "../assets/json/enemies/orc-masked.json");
         this.load.atlas("demon-big", "../assets/img/enemies/demon-big.png", "../assets/json/enemies/demon-big.json");
+        this.load.atlas("wogol", "../assets/img/enemies/wogol.png", "../assets/json/enemies/wogol.json");
+        this.load.atlas("zombie-big", "../assets/img/enemies/zombie-big.png", "../assets/json/enemies/zombie-big.json");
 
         //attacks
         this.load.atlas("energy-ball", "../assets/img/enemies/attacks/energy_ball.png", "../assets/json/enemies/attacks/energy_ball.json")
@@ -39,17 +41,10 @@ export default class oader extends Phaser.Scene {
 
         //ui and backgrounds
         this.load.image("Menubackground", "../assets/img/pics/Menubackground.png");
+        this.load.image("mana-bar-chunk", "../assets/img/ui/mana-bar-rectangle.png");
     }
 
     create() {
-        // $.ajax({
-        //     url: "/api/highScores",
-        //     type: "GET"
-        // }).then(
-        //     function(response) {
-        //         console.log(response)
-        //     }
-        // );
         this.scene.start('menu');
     }
 }

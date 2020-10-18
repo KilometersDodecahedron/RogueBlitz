@@ -15,6 +15,9 @@ export default class RandomlyMovingEnemy extends Enemy{
         //used by shootingEnemies to have them hold still while firing
         this.stopped = false;
 
+        //used for enemy classes that just use this for movement and have other things that determine movement
+        this.dontChangeDirectionUntilTold = false;
+
         //storing this here so it can be destroyed when the object is destroyed
         this.randomMovementEvent = Phaser.Time.TimerEvent;
 
@@ -39,6 +42,11 @@ export default class RandomlyMovingEnemy extends Enemy{
         //NOTE calling this here instead of the parent class to make sure it uses the movesFromTheStart of the descendant
         if(this.movesFromTheStart){
             this.setMovementInRandomDirection();
+        }
+
+        //keep them from changing direction at interval if told not to
+        if(this.dontChangeDirectionUntilTold){
+            this.randomMovementEvent.destroy();
         }
     }
 

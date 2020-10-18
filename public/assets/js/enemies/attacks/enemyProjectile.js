@@ -19,6 +19,5 @@ export default class EnemyProjectile extends Phaser.Physics.Arcade.Sprite{
 
     giveVelocityCallback(){
         // this.currentScene.physics.velocityFromRotation(angle, speed, this.body.velocity);
-        console.log(this.currentScene);
     }
 }

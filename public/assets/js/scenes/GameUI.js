@@ -7,16 +7,23 @@ export default class GameUI extends Phaser.Scene {
         //the key to get it
         super("game-ui");
 
-        this.numberOfHearts = 3
+        this.numberOfHearts = 4
         this.hearts;
         this.scoreDisplay;
+        this.numberOfManaChunks = 12;
+        this.manaBar;
     }
 
     create(){
-        this.scoreDisplay = this.add.text(5, 40, "Score: 0");
+        this.scoreDisplay = this.add.text(5, 60, "Score: 0");
 
         //group object for the heath hearts
         this.hearts = this.add.group({
+            classType: Phaser.GameObjects.Image
+        });
+
+        //group object for the mana bar
+        this.manaBar = this.add.group({
             classType: Phaser.GameObjects.Image
         });
 
@@ -31,9 +38,25 @@ export default class GameUI extends Phaser.Scene {
             quantity: this.numberOfHearts
         });
 
+        //create the mana bar chunks
+        this.manaBar.createMultiple({
+            key: "mana-bar-chunk",
+            setXY: {
+                x: 15,
+                y: 48,
+                stepX: 9
+            },
+            quantity: this.numberOfManaChunks
+        });
+
         //make the hearts bigger
         this.hearts.children.iterate(child => {
             child.setScale(2, 2);
+        });
+
+        //make mana chunks smaller
+        this.manaBar.children.iterate(child => {
+            child.setScale(0.75, 1);
         });
 
         //checks for the playerHealthChanged event, and updates the ui

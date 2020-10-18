@@ -8,6 +8,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.damage = 1;
         this.speed = 100;
 
+        //for enemies that move faster or slower under specific circumstances
+        this.selfSpeedModifer = 1;
+
+        //margin of error in finding x and y positions, to stop gittery movement
+        this.positionErrorMargin = 10;
+
         //points you get for defeating it
         this.pointValue = 10;
 
@@ -74,6 +80,44 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         //TODO
         sceneEvents.emit(eventNames.enemyDefeated, this.pointValue);
         this.destroy();
+    }
+
+    moveInGeneralDirectionOfPlayer(thePlayer){
+        //determine movement based on player position
+        //move straight down if directly below
+        if(Math.abs(this.x - thePlayer.x) <= this.positionErrorMargin &&
+            this.y < thePlayer.y){
+                this.setMoveDown();
+        //move straight up if directly above
+        }else if(Math.abs(this.x - thePlayer.x) <= this.positionErrorMargin &&
+        this.y > thePlayer.y){
+            this.setMoveUp();
+        //move straight right
+        }else if(Math.abs(this.y - thePlayer.y) <= this.positionErrorMargin &&
+        this.x < thePlayer.x){
+            this.setMoveRight();
+        //move straight left
+        }else if(Math.abs(this.y - thePlayer.y) <= this.positionErrorMargin &&
+        this.x > thePlayer.x){
+            this.setMoveLeft();
+        }else{
+            //diagonal movement
+            if(this.x > thePlayer.x){
+                this.directionTracker.left = true;
+                this.directionTracker.right = false;
+            }else{
+                this.directionTracker.left = false;
+                this.directionTracker.right = true;
+            }
+
+            if(this.y > thePlayer.y){
+                this.directionTracker.up = true;
+                this.directionTracker.down = false;
+            }else{
+                this.directionTracker.up = false;
+                this.directionTracker.down = true;
+            }
+        }
     }
 
     stopMoving(){
@@ -147,6 +191,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.anims.play(idleAnimName, true);
         }
 
-        this.body.velocity.normalize().scale(this.speed);
+        this.body.velocity.normalize().scale(this.speed * this.selfSpeedModifer);
     }
 }

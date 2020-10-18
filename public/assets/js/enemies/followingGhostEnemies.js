@@ -56,41 +56,7 @@ export default class FollowingGhostEnemy extends Enemy{
             if(this.isFollowingPlayer){
                 //check player is isn't outside break range
                 if(this.distanceToPlayer <= this.breakFollowRange){
-                    //determine movement based on player position
-                    //move straight down if directly below
-                    if(Math.abs(this.x - this.thePlayer.x) <= this.positionErrorMargin &&
-                        this.y < this.thePlayer.y){
-                            this.setMoveDown();
-                    //move straight up if directly above
-                    }else if(Math.abs(this.x - this.thePlayer.x) <= this.positionErrorMargin &&
-                    this.y > this.thePlayer.y){
-                        this.setMoveUp();
-                    //move straight right
-                    }else if(Math.abs(this.y - this.thePlayer.y) <= this.positionErrorMargin &&
-                    this.x < this.thePlayer.x){
-                        this.setMoveRight();
-                    //move straight left
-                    }else if(Math.abs(this.y - this.thePlayer.y) <= this.positionErrorMargin &&
-                    this.x > this.thePlayer.x){
-                        this.setMoveLeft();
-                    }else{
-                        //diagonal movement
-                        if(this.x > this.thePlayer.x){
-                            this.directionTracker.left = true;
-                            this.directionTracker.right = false;
-                        }else{
-                            this.directionTracker.left = false;
-                            this.directionTracker.right = true;
-                        }
-
-                        if(this.y > this.thePlayer.y){
-                            this.directionTracker.up = true;
-                            this.directionTracker.down = false;
-                        }else{
-                            this.directionTracker.up = false;
-                            this.directionTracker.down = true;
-                        }
-                    }
+                    this.moveInGeneralDirectionOfPlayer(this.thePlayer);
                 }
                 //player is outside break range
                 else{

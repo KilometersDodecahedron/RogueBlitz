@@ -3,7 +3,8 @@ const eventNames = {
     playerHealthChanged: "player-health-changed",
     enemyDefeated: "enemyDefeated",
     scoreUpdated: "scoreUpdated",
-    halfSecondTimer: "halfSecondTimer"
+    halfSecondTimer: "halfSecondTimer",
+    spentMana: "spentMana"
 }
 
 export {
