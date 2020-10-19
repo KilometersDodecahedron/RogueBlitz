@@ -20,9 +20,15 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.takenDamageState = false;
         this.damageTime = 0;
         this.naturalTint = 0xffffff;
-
+        this.hitStunDiration = 200;
         //how far to knock back the player when they collide
         this.knockBack = 200;
+        
+        //bounce off the player after colliding with them
+        this.bounceBackState = false;
+        this.bounceTime = 0;
+        this.bounceDuration = 200;
+        this.bounceSpeed = 100;
 
         this.directionTracker = {
             up: false,
@@ -39,13 +45,24 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     preUpdate(time, deltaTime){
         super.preUpdate(time, deltaTime);
+        //manage knockback from player attacks
         if(this.takenDamageState){
             this.damageTime += deltaTime;
             // knockback period in milliseconds
-            if(this.damageTime >= 200){
+            if(this.damageTime >= this.hitStunDiration){
                 this.takenDamageState = false;
                 this.setTint(this.naturalTint);
                 this.damageTime = 0;
+            }
+        }
+
+        //managed bounceback from hitting the player
+        if(this.bounceBackState){
+            this.bounceTime += deltaTime;
+            // knockback period in milliseconds
+            if(this.bounceTime >= this.bounceDuration){
+                this.bounceBackState = false;
+                this.bounceTime = 0;
             }
         }
     }
@@ -53,6 +70,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
     //returns true or false. Used in random functions
     coinFlip(){
         return 0.5 >= Math.random();
+    }
+
+    //called when enemy collides with player to bounce back a bit
+    bounceOff(direction){
+        this.bounceBackState = true;
+        this.bounceTime = 0;
+        this.setVelocity(-direction.x, -direction.y);
     }
 
     takeDamage(damage, direction){
@@ -158,7 +182,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     //call on preUpdate
     manageMovement(idleAnimName, runAnimName){
-        if(this.takenDamageState){
+        if(this.takenDamageState || this.bounceBackState){
             this.anims.play(idleAnimName, true);
             return;
         }

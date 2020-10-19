@@ -456,9 +456,14 @@ export default class Game extends Phaser.Scene {
         let directionX = player.x - enemy.x;
         let directionY = player.y - enemy.y;
 
+        //bounce the player back
         let directionalVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(enemy.knockBack);
+        //bounce the enemy back
+        let bounceBackVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(enemy.bounceSpeed);
 
         this.knight.takeDamage(directionalVector, enemy.damage);
+
+        enemy.bounceOff(bounceBackVector);
 
         sceneEvents.emit(eventNames.playerHealthChanged, this.knight.health);
 
