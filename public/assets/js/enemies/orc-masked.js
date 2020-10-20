@@ -23,7 +23,7 @@ export default class OrcMasked extends ShootingEnemy {
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
-        this.canMoveDiagonally = true;
+        this.canMoveDiagonally = false;
         this.pointValue = 35;
         this.descendantStartMethod();
     }

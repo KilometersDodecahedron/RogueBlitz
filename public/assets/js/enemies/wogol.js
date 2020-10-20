@@ -7,6 +7,8 @@ export default class Wogol extends FollowingZombieEnemy {
         this.damage = 1;
         this.speed = 50;
         this.knockBack = 300;
+        //how far this enemy bounces back after colliding with the player
+        this.bounceSpeed = 200;
 
         //what range is needed to start chasing the player
         //NOTE: unlike ghost enemies, they won't stop until there's a wall between them and the player

@@ -28,6 +28,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.bounceBackState = false;
         this.bounceTime = 0;
         this.bounceDuration = 200;
+        //this value is used by the game script in the manage collision function
         this.bounceSpeed = 100;
 
         this.directionTracker = {

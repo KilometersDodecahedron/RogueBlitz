@@ -6,11 +6,14 @@ export default class Goblin extends RandomlyMovingEnemy {
         this.health = 5;
         this.damage = 1;
         this.speed = 75;
-        this.knockBack = 240;
+        this.knockBack = 100;
+
+        this.bounceSpeed = 240;
+
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
-        this.canMoveDiagonally = true;
+        this.canMoveDiagonally = false;
         this.pointValue = 15;
         this.descendantStartMethod();
     }

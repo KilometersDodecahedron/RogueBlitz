@@ -290,6 +290,7 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.setSize(13, 15).setOffset(2, 2);
                 //have them create an event when they come in collide with something 
                 gameObject.body.onCollide = true;
+                gameObject.setSceneObjectsCallback(this.knight, this.wallCheckRay);
             }
         });
         this.enemiesTierTwo.push({group: zombies, name: "zombie", spawnLayer: solidEnemySpawnPoints});
@@ -318,6 +319,7 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.setSize(22, 30).setOffset(5, 7);
                 //have them create an event when they come in collide with something 
                 gameObject.body.onCollide = true;
+                gameObject.setProjectileAndPlayerAndRayAndScene(energyBall, this.knight, this.playerCheckRay, this.wallCheckRay, this, "energy-ball");
             }
         });
         this.enemiesTierFive.push({group: demonBigs, name: "demon-big", spawnLayer: solidEnemySpawnPoints});

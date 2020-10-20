@@ -1,12 +1,27 @@
-import RandomlyMovingEnemy from "./randomlyMovingEnemy.js";
+import ShootingEnemy from "./shootingEnemies.js";
 
-export default class DemonBig extends RandomlyMovingEnemy {
+export default class DemonBig extends ShootingEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.health = 20;
+        this.health = 30;
         this.damage = 3;
-        this.speed = 70;
+        this.speed = 50;
         this.knockBack = 350;
+
+        this.bounceSpeed = 50;
+
+        this.shotDamage = 2;
+        this.shotKnockback = 200;
+        //make the projectile a different color
+        //write it as '0x' followed by the hexcode
+        //0xffffff for no color change
+        this.shotColor = 0x8B0000;
+        //check if player is in range before firing
+        this.fireRange = 130;
+        this.shotSpeed = 45;
+        //this is in milliseconds
+        this.fireRate = 6000;
+
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = false;
