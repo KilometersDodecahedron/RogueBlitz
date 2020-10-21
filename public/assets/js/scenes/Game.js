@@ -136,6 +136,9 @@ export default class Game extends Phaser.Scene {
                 gameObject.body.onCollide = true;
             }
         })
+
+        //get the axes group object from the knight
+        //const axes = this.knight.axes;
         
         //add the knight
         this.knight = this.add.player(this.scene, 200, 200, "knight");
@@ -409,10 +412,35 @@ export default class Game extends Phaser.Scene {
         this.playerEnemyCollisionArray.push(this.physics.add.collider(wogol, this.knight, this.handleEnemyCollisions, undefined, this));
         this.playerEnemyCollisionArray.push(this.physics.add.collider(zombieBig, this.knight, this.handleEnemyCollisions, undefined, this));
 
+        //have weapons hit things
+        this.physics.add.collider(this.knight.axes, goblins, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, ogres, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, demons, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, necromancers, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, oozeSwampy, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, oozeMuddy, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, zombieIce, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, skeletons, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, zombies, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, orcMaskeds, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, demonBigs, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, demonSmalls, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, wogol, this.handleWeaponHit, undefined, this);
+        this.physics.add.collider(this.knight.axes, zombieBig, this.handleWeaponHit, undefined, this);
+
         //enemy projectiles hit player
         this.playerEnemyCollisionArray.push(this.physics.add.collider(energyBall, this.knight, this.handleEnemyProjectileHit, undefined, this));
         
         this.spawnNewSetOfEnemies();
+    }
+
+    handleWeaponHit(weapon, enemy){
+        let directionX = this.knight.x - enemy.x;
+        let directionY = this.knight.y - enemy.y;
+
+        let directionalVector = new Phaser.Math.Vector2(directionX, directionY).normalize().scale(-weapon.knockback);
+
+        enemy.takeDamage(weapon.damage, directionalVector);
     }
 
     handleProjectileHit(projectile, enemy){

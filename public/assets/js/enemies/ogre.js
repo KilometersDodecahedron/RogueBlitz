@@ -8,7 +8,6 @@ export default class Ogre extends RandomlyMovingEnemy {
         this.speed = 65;
         this.knockBack = 350;
 
-        this.bounceSpeed = 50;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = true;

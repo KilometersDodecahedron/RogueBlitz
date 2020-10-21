@@ -3,7 +3,7 @@ import FollowingZombieEnemy from "./followingZombieEnemies.js";
 export default class ZombieBig extends FollowingZombieEnemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.health = 30;
+        this.health = 25;
         this.damage = 3;
         this.speed = 40;
         this.knockBack = 500;

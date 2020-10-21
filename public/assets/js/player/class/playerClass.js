@@ -1,3 +1,5 @@
+import RotatingAxe from "../weapons/RotatingAxe.js";
+
 export default class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
@@ -7,6 +9,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         this.speed = 125;
 
         this.knives;
+        this.axes = this.scene.physics.add.group({
+            classType: RotatingAxe,
+            createCallback: (gameobject) => {
+                gameobject.callbackFunction(this.lastKeyboardInput, this);
+            }
+        });
+        
+        //key for swinging th axe
+        this.axeKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        
+        this.swingAxeUp = false;
+        this.swingDuration = 150;
+        this.swingTimer = 0;
+        this.isSwinging = false;
+
         this.throwSpeedFast = 300;
         this.throwKnockbackFast = 100;
 
@@ -32,6 +49,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
 
     preUpdate(time, deltaTime){
         super.preUpdate(time, deltaTime);
+
         if(this.takenDamageState){
             this.damageTime += deltaTime;
             // knockback period in milliseconds
@@ -50,11 +68,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
                 this.attackTimer = 0;
             }
         }
+
+        if(this.isSwinging){
+            this.swingTimer += deltaTime;
+            if(this.swingTimer >= this.swingDuration){
+                this.isSwinging = false;
+                this.swingTimer = 0;
+            }
+        }
     }
 
     update(cursors){
+
         //do nothing if can't find controls or player
-        if(!cursors || this.takenDamageState || this.isDead || this.attackingState){
+        if(!cursors || this.takenDamageState || this.isDead || this.attackingState || this.isSwinging){
             return;
         }
 
@@ -120,6 +147,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
 
             this.throwKnife();
         }
+        //axe attack
+        else if(this.axeKey.isDown){
+            this.rotatingAxes()
+        }
+    }
+
+    rotatingAxes(){
+        const axe = this.axes.get(this.x, this.y, "axe");
+        this.setVelocity(0, 0);
+        this.anims.play("knight-idle", true);
+        this.swingDuration = axe.swingDuration;
+        this.isSwinging = true;
+        this.swingAxeUp = !this.swingAxeUp;
     }
 
     throwKnife(){

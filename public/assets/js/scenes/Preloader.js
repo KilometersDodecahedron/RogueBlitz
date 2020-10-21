@@ -14,6 +14,7 @@ export default class oader extends Phaser.Scene {
 
         //weapons
         this.load.image("knife", "../assets/img/player/weapons/weapon_knife.png")
+        this.load.image("axe", "../assets/img/player/weapons/weapon_axe.png")
 
         //enemies
         this.load.atlas("goblin", "../assets/img/enemies/goblin.png", "../assets/json/enemies/goblin.json");

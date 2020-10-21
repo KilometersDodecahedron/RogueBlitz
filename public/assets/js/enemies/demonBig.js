@@ -8,8 +8,6 @@ export default class DemonBig extends ShootingEnemy {
         this.speed = 50;
         this.knockBack = 350;
 
-        this.bounceSpeed = 50;
-
         this.shotDamage = 2;
         this.shotKnockback = 200;
         //make the projectile a different color
