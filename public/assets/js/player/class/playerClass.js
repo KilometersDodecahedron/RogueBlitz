@@ -24,6 +24,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         this.swingTimer = 0;
         this.isSwinging = false;
 
+        this.axeCooldown = 1000;
+        this.axeTimer = 0;
+        this.axeOnCooldown = false;
+        this.swingCount = 0;
+
         this.throwSpeedFast = 300;
         this.throwKnockbackFast = 100;
 
@@ -74,6 +79,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             if(this.swingTimer >= this.swingDuration){
                 this.isSwinging = false;
                 this.swingTimer = 0;
+            }
+        }
+
+        if(this.axeOnCooldown){
+            this.axeTimer += deltaTime;
+            if(this.axeTimer >= this.axeCooldown){
+                this.axeOnCooldown = false;
+                this.swingCount = 0;
+                this.axeTimer = 0;
             }
         }
     }
@@ -148,12 +162,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             this.throwKnife();
         }
         //axe attack
-        else if(this.axeKey.isDown){
+        else if(this.axeKey.isDown && !this.axeOnCooldown ||
+            this.axeKey.isDown && this.swingCount < 2){
             this.rotatingAxes()
         }
     }
 
     rotatingAxes(){
+        this.swingCount += 1;
+        this.axeOnCooldown = true;
         const axe = this.axes.get(this.x, this.y, "axe");
         this.setVelocity(0, 0);
         this.anims.play("knight-idle", true);
