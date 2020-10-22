@@ -262,10 +262,6 @@ export default class Game extends Phaser.Scene {
         this.enemiesTierFive.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
         this.enemiesTierSix.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
 
-        oozeSwampy.get(300, 300, "ooze-swampy");
-        oozeSwampy.get(350, 300, "ooze-swampy");
-        oozeSwampy.get(400, 300, "ooze-swampy");
-
         const oozeMuddy = this.physics.add.group({
             classType: OozeMuddy,
             createCallback: (gameObject) => {
