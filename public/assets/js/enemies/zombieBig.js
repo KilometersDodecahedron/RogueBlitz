@@ -8,6 +8,9 @@ export default class ZombieBig extends FollowingZombieEnemy {
         this.speed = 40;
         this.knockBack = 500;
 
+        //set scale of explosion when this enemy dies
+        this.deathExplosionEffectScale = 1;
+
         //what range is needed to start chasing the player
         //NOTE: unlike ghost enemies, they won't stop until there's a wall between them and the player
         this.aquisitionRange = 180;

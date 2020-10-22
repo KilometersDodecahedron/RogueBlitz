@@ -8,6 +8,9 @@ export default class demonSmall extends RandomlyMovingEnemy {
         this.speed = 65;
         this.knockBack = 100;
 
+        //set scale of explosion when this enemy dies
+        this.deathExplosionEffectScale = 0.6;
+
         this.bounceSpeed = 240;
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;

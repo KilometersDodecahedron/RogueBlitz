@@ -8,6 +8,9 @@ export default class Ogre extends RandomlyMovingEnemy {
         this.speed = 65;
         this.knockBack = 350;
 
+        //set scale of explosion when this enemy dies
+        this.deathExplosionEffectScale = 1;
+
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
         this.canBeStill = true;

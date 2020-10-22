@@ -1,6 +1,8 @@
 import { sceneEvents } from "../events/eventCenter.js";
 import { eventNames } from "../events/eventNames.js";
 
+import TemporaryVisualEffectClass from "../effects/TemporaryVisualEffectClass.js";
+
 export default class Enemy extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
@@ -8,6 +10,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.damage = 1;
         this.speed = 100;
 
+        //set scale of explosion when this enemy dies
+        this.deathExplosionEffectScale = 0.8;
+        
         //for enemies that move faster or slower under specific circumstances
         this.selfSpeedModifer = 1;
 
@@ -103,7 +108,16 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     defeated(){
         //TODO
-        sceneEvents.emit(eventNames.enemyDefeated, this.pointValue);
+        //this.scene.add.sprite(this.x, this.y, "explosion-sample").play("explosion-sample");
+        let explosion = new TemporaryVisualEffectClass({
+            scene: this.scene,
+            x: this.x,
+            y: this.y,
+            name: "explosion-sample",
+            scale: this.deathExplosionEffectScale,
+            alpha: 0.8
+        });
+        sceneEvents.emit(eventNames.enemyDefeated, this);
         this.destroy();
     }
 

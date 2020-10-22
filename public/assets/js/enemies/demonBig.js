@@ -8,6 +8,9 @@ export default class DemonBig extends ShootingEnemy {
         this.speed = 50;
         this.knockBack = 350;
 
+        //set scale of explosion when this enemy dies
+        this.deathExplosionEffectScale = 1;
+
         this.shotDamage = 2;
         this.shotKnockback = 200;
         //make the projectile a different color

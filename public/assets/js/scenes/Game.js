@@ -6,6 +6,7 @@ import debugDraw from "../utils/debug.js";
 //import animations stored in separate files
 import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims, createEnergyBallAnims, createZombieIceAnims, createSkeletonAnims, createZombieAnims, createOrcMaskedAnims, createDemonBigAnims, createDemonSmallAnims, createWogolAnims, createZombieBigAnims} from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
+import { createExplosionSampleAnims } from "../anims/effectAnims.js";
 
 //import enemies
 import Goblin from "../enemies/goblin.js";
@@ -106,6 +107,7 @@ export default class Game extends Phaser.Scene {
         createDemonSmallAnims(this.anims);
         createWogolAnims(this.anims);
         createZombieBigAnims(this.anims);
+        createExplosionSampleAnims(this.anims);
 
         const map = this.make.tilemap({key: 'dungeon'});
         
@@ -528,8 +530,8 @@ export default class Game extends Phaser.Scene {
     }
 
     //called as an event
-    handleEnemyDefeated(points){
-        this.score += points;
+    handleEnemyDefeated(enemy){
+        this.score += enemy.pointValue;
         this.currentSpawingTimer += this.enemyDeathTimerReduction;
         this.currentEnemyCount -= 1;
         sceneEvents.emit(eventNames.scoreUpdated, this.score)

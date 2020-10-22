@@ -40,8 +40,6 @@ export default class RotatingAxe extends Weapon{
         var verticle = false;
         var angle = 0
 
-        this.setScale(1.2,1.2);
-
         //where to instantiate the axe
         switch(direction){
             case "right":
@@ -95,6 +93,8 @@ export default class RotatingAxe extends Weapon{
         if(verticle){
             this.body.setSize(9, 21);
         }
+
+        this.setScale(1.2,1.2);
         
         //set direction to move axe, and face axe face that direction
         if(this.horizontal){

@@ -8,6 +8,9 @@ export default class Goblin extends RandomlyMovingEnemy {
         this.speed = 75;
         this.knockBack = 100;
 
+        //set scale of explosion when this enemy dies
+        this.deathExplosionEffectScale = 0.6;
+
         this.bounceSpeed = 240;
 
         this.changeDirectionInterval = 2000;
