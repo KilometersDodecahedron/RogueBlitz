@@ -21,11 +21,13 @@ header {
 
 .jumbotron {
 color: black;
-text-shadow: 1px 1px 2px whitesmoke, 0 0 25px blueviolet, 0 0 5px firebrick;
+text-shadow: 1px 1px 2px whitesmoke, 0 0 15px cornflowerblue, 0 0 5px firebrick;
 background: url(../img/pics/backround.gif);
-padding: 3rem;
+padding: 5.5rem;
 margin-bottom: 1em;
 margin-right: -2em;
+background-position: center;
+
 
 }
 

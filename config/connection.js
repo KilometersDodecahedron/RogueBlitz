@@ -9,7 +9,7 @@ if (process.env.JAWSDB_URL) {
     port: process.env.PORT || 3306,
     user: "root",
     /* Put in your password here */
-    password: "wJfGSO1F0hzx",
+    password: "password",
     database: "rogueBlitz_db"
   });
 }
