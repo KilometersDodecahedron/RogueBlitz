@@ -262,6 +262,10 @@ export default class Game extends Phaser.Scene {
         this.enemiesTierFive.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
         this.enemiesTierSix.push({group: oozeSwampy, name: "ooze-swampy", spawnLayer: phasingEnemySpawnPoints});
 
+        oozeSwampy.get(300, 300, "ooze-swampy");
+        oozeSwampy.get(350, 300, "ooze-swampy");
+        oozeSwampy.get(400, 300, "ooze-swampy");
+
         const oozeMuddy = this.physics.add.group({
             classType: OozeMuddy,
             createCallback: (gameObject) => {
@@ -415,20 +419,20 @@ export default class Game extends Phaser.Scene {
         this.playerEnemyCollisionArray.push(this.physics.add.collider(zombieBig, this.knight, this.handleEnemyCollisions, undefined, this));
 
         //have weapons hit things
-        this.physics.add.collider(this.knight.axes, goblins, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, ogres, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, demons, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, necromancers, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, oozeSwampy, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, oozeMuddy, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, zombieIce, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, skeletons, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, zombies, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, orcMaskeds, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, demonBigs, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, demonSmalls, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, wogol, this.handleWeaponHit, undefined, this);
-        this.physics.add.collider(this.knight.axes, zombieBig, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, goblins, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, ogres, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, demons, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, necromancers, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, oozeSwampy, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, oozeMuddy, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, zombieIce, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, skeletons, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, zombies, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, orcMaskeds, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, demonBigs, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, demonSmalls, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, wogol, this.handleWeaponHit, undefined, this);
+        this.physics.add.overlap(this.knight.axes, zombieBig, this.handleWeaponHit, undefined, this);
 
         //enemy projectiles hit player
         this.playerEnemyCollisionArray.push(this.physics.add.collider(energyBall, this.knight, this.handleEnemyProjectileHit, undefined, this));

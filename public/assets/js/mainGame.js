@@ -16,7 +16,7 @@ const config = {
         arcade: {
             //Top-Down game. No Gravity needed
             gravity: { y: 0 }
-            // ,debug: true
+            ,debug: true
         }
     },
 
