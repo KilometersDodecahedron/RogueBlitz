@@ -10,12 +10,14 @@ export default class GameUI extends Phaser.Scene {
         this.numberOfHearts = 4
         this.hearts;
         this.scoreDisplay;
-        this.numberOfManaChunks = 12;
-        this.manaBar;
+
+        this.weaponDisplay;
+        this.numberOfWeaponChunks = 4;
+        this.weaponBar;
     }
 
     create(){
-        this.scoreDisplay = this.add.text(5, 60, "Score: 0");
+        this.scoreDisplay = this.add.text(5, 40, "Score: 0");
 
         //group object for the heath hearts
         this.hearts = this.add.group({
@@ -23,7 +25,7 @@ export default class GameUI extends Phaser.Scene {
         });
 
         //group object for the mana bar
-        this.manaBar = this.add.group({
+        this.weaponBar = this.add.group({
             classType: Phaser.GameObjects.Image
         });
 
@@ -39,15 +41,17 @@ export default class GameUI extends Phaser.Scene {
         });
 
         //create the mana bar chunks
-        this.manaBar.createMultiple({
+        this.weaponBar.createMultiple({
             key: "mana-bar-chunk",
             setXY: {
-                x: 15,
-                y: 48,
-                stepX: 9
+                x: 196,
+                y: 43,
+                stepX: -12
             },
-            quantity: this.numberOfManaChunks
+            quantity: this.numberOfWeaponChunks
         });
+
+        this.weaponDisplay = this.add.image(180, 20, "axe").setScale(2.5, 2.5);
 
         //make the hearts bigger
         this.hearts.children.iterate(child => {
@@ -55,18 +59,30 @@ export default class GameUI extends Phaser.Scene {
         });
 
         //make mana chunks smaller
-        this.manaBar.children.iterate(child => {
-            child.setScale(0.75, 1);
+        this.weaponBar.children.iterate(child => {
+            child.setScale(1, 1);
         });
 
         //checks for the playerHealthChanged event, and updates the ui
         sceneEvents.on(eventNames.playerHealthChanged, this.handlePlayerHealthChanged, this);
         sceneEvents.on(eventNames.scoreUpdated, this.handlePlayerScoreChanged, this);
+        sceneEvents.on(eventNames.weaponChargeChanged, this.handleWeaponSwingChangeChange, this);
 
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
             sceneEvents.off(eventNames.playerHealthChanged, this.handlePlayerHealthChanged, this);
             sceneEvents.off(eventNames.scoreUpdated, this.handlePlayerScoreChanged, this);
+            sceneEvents.off(eventNames.weaponChargeChanged, this.handleWeaponSwingChangeChange, this);
         })
+    }
+
+    handleWeaponSwingChangeChange(charges){
+        this.weaponBar.children.each((gameObject, index) => {
+            if(index < charges){
+                gameObject.setTexture("mana-bar-chunk-empty");
+            }else{
+                gameObject.setTexture("mana-bar-chunk");
+            }
+        });
     }
 
     handlePlayerHealthChanged(health){

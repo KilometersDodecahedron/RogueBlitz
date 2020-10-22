@@ -1,4 +1,6 @@
 import RotatingAxe from "../weapons/RotatingAxe.js";
+import { sceneEvents } from "../../events/eventCenter.js";
+import { eventNames } from "../../events/eventNames.js";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame) {
@@ -24,9 +26,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         this.swingTimer = 0;
         this.isSwinging = false;
 
-        this.axeCooldown = 1000;
+        this.axeCooldown = 2000;
         this.axeTimer = 0;
-        this.axeOnCooldown = false;
+        this.maxSwingChanges = 4;
         this.swingCount = 0;
 
         this.throwSpeedFast = 300;
@@ -82,12 +84,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             }
         }
 
-        if(this.axeOnCooldown){
+        if(this.swingCount > 0){
             this.axeTimer += deltaTime;
             if(this.axeTimer >= this.axeCooldown){
-                this.axeOnCooldown = false;
-                this.swingCount = 0;
                 this.axeTimer = 0;
+                this.swingCount--;
+                sceneEvents.emit(eventNames.weaponChargeChanged, this.swingCount, this);
             }
         }
     }
@@ -162,15 +164,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             this.throwKnife();
         }
         //axe attack
-        else if(this.axeKey.isDown && !this.axeOnCooldown ||
-            this.axeKey.isDown && this.swingCount < 2){
+        else if(this.axeKey.isDown && this.swingCount < this.maxSwingChanges){
             this.rotatingAxes()
         }
     }
 
     rotatingAxes(){
-        this.swingCount += 1;
-        this.axeOnCooldown = true;
+        this.swingCount++;
+        this.axeTimer = 0;
+        sceneEvents.emit(eventNames.weaponChargeChanged, this.swingCount, this);
+
         const axe = this.axes.get(this.x, this.y, "axe");
         this.setVelocity(0, 0);
         this.anims.play("knight-idle", true);

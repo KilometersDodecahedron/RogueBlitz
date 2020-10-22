@@ -4,7 +4,9 @@ const eventNames = {
     enemyDefeated: "enemyDefeated",
     scoreUpdated: "scoreUpdated",
     halfSecondTimer: "halfSecondTimer",
-    spentMana: "spentMana"
+    spentMana: "spentMana",
+    //used for ui of axe swing
+    weaponChargeChanged: "weaponChargeChanged"
 }
 
 export {

@@ -43,6 +43,7 @@ export default class oader extends Phaser.Scene {
         //ui and backgrounds
         this.load.image("Menubackground", "../assets/img/pics/Menubackground.png");
         this.load.image("mana-bar-chunk", "../assets/img/ui/mana-bar-rectangle.png");
+        this.load.image("mana-bar-chunk-empty", "../assets/img/ui/mana-bar-rectangle-empty.png");
 
         //effects
         this.load.atlas("explosion-sample", "../assets/img/effects/explosion-sample.png", "../assets/json/effects/explosion-sample.json");
