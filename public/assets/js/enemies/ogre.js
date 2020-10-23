@@ -13,7 +13,7 @@ export default class Ogre extends RandomlyMovingEnemy {
 
         this.changeDirectionInterval = 2000;
         this.movesFromTheStart = true;
-        this.canBeStill = true;
+        this.canBeStill = false;
         this.canMoveDiagonally = false;
         this.pointValue = 60;
         this.descendantStartMethod();
