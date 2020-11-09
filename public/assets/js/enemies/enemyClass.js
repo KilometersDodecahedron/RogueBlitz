@@ -36,6 +36,15 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         //this value is used by the game script in the manage collision function
         this.bounceSpeed = 100;
 
+        //checks to see if the enemy is stunned
+        this.isStunned = false;
+        this.stunnedTime = 0;
+
+        //use addMethodToRunWhenDefeated to add to this
+        this.onDeathFunctionArray = [];
+        //use addMethodToRunAfterTakingDamage to add to this
+        this.onTakeDamageFunctionArray = [];
+
         this.directionTracker = {
             up: false,
             down: false,
@@ -71,6 +80,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.bounceTime = 0;
             }
         }
+
+        if(this.isStunned){
+            this.stunnedTime -= deltaTime;
+            if(this.stunnedTime <= 0){
+                this.unStunEnemy();
+            }
+        }
     }
 
     //returns true or false. Used in random functions
@@ -78,11 +94,25 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         return 0.5 >= Math.random();
     }
 
+    stunEnemy(stunDuration){
+        this.isStunned = true;
+        this.stunnedTime = stunDuration;
+        this.setTint(0x59597F);
+        this.setVelocity(0, 0);
+    }
+
+    unStunEnemy(){
+        this.isStunned = false;
+        this.stunDuration = 0;
+        this.setTint(this.naturalTint);
+    }
+
     //called when enemy collides with player to bounce back a bit
     bounceOff(direction){
         this.bounceBackState = true;
         this.bounceTime = 0;
         this.setVelocity(-direction.x, -direction.y);
+        this.unStunEnemy();
     }
 
     takeDamage(damage, direction){
@@ -92,10 +122,19 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
         this.health -= damage;
 
+        //run custom methods to run when taking damage
+        if(this.onTakeDamageFunctionArray.length > 0){
+            this.onTakeDamageFunctionArray.forEach(method => {
+                method();
+            });
+        }
+
         if(this.health <= 0){
             this.defeated();
             return;
         }
+
+        this.unStunEnemy();
         
         //change color
         this.setTint(0xff0000);
@@ -106,9 +145,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.damageTime = 0;
     }
 
+    addMethodToRunAfterTakingDamage(method){
+        this.onTakeDamageFunctionArray.push(method);
+    }
+
     defeated(){
-        //TODO
-        //this.scene.add.sprite(this.x, this.y, "explosion-sample").play("explosion-sample");
+        //check for any on-death callbacks
+        if(this.onDeathFunctionArray.length > 0){
+            this.onDeathFunctionArray.forEach(element => {
+                element();
+            });
+        }
+        
         let explosion = new TemporaryVisualEffectClass({
             scene: this.scene,
             x: this.x,
@@ -119,6 +167,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
         });
         sceneEvents.emit(eventNames.enemyDefeated, this);
         this.destroy();
+    }
+
+    //called to tell it to do something specific when it dies
+    addMethodToRunWhenDefeated(method){
+        this.onDeathFunctionArray.push(method);
     }
 
     moveInGeneralDirectionOfPlayer(thePlayer){
@@ -197,7 +250,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     //call on preUpdate
     manageMovement(idleAnimName, runAnimName){
-        if(this.takenDamageState || this.bounceBackState){
+        if(this.takenDamageState || this.bounceBackState || this.isStunned){
             this.anims.play(idleAnimName, true);
             return;
         }

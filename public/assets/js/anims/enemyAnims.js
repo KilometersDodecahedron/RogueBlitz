@@ -183,6 +183,22 @@ const createOrcMaskedAnims = anims => {
     });
 }
 
+const createOrcWarriorAnims = anims => {
+    anims.create({
+        key: "orc-warrior-idle",
+        frames: anims.generateFrameNames("orc-warrior", {start: 0, end: 3, prefix: "orc_warrior_idle_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+
+    anims.create({
+        key: "orc-warrior-run",
+        frames: anims.generateFrameNames("orc-warrior", {start: 0, end: 3, prefix: "orc_warrior_run_anim_f", suffix: ".png"}),
+        frameRate: 12,
+        repeat: -1
+    });
+}
+
 const createDemonBigAnims = anims => {
     anims.create({
         key: "demon-big-idle",
@@ -246,5 +262,6 @@ export {
     createOrcMaskedAnims,
     createDemonBigAnims,
     createWogolAnims,
-    createZombieBigAnims
+    createZombieBigAnims,
+    createOrcWarriorAnims
 }

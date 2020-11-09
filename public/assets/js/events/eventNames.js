@@ -6,7 +6,8 @@ const eventNames = {
     halfSecondTimer: "halfSecondTimer",
     spentMana: "spentMana",
     //used for ui of axe swing
-    weaponChargeChanged: "weaponChargeChanged"
+    weaponChargeChanged: "weaponChargeChanged",
+    ultimateChargeChanged: "ultimateChargeChanged"
 }
 
 export {

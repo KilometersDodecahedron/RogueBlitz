@@ -33,6 +33,12 @@ export default class ShootingEnemy extends RandomlyMovingEnemy{
 
     preUpdate(time, deltaTime){
         super.preUpdate(time, deltaTime);
+
+        //prevent the enemy from firing while stunned
+        if(this.isStunned){
+            return;
+        }
+
         //makes sure weapon does not fire more than the fire rate
         if(this.weaponIsRechargingState){
             this.fireTimer += deltaTime;
