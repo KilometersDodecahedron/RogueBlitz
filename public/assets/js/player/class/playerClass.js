@@ -1,4 +1,5 @@
 import RotatingAxe from "../weapons/RotatingAxe.js";
+import WarCry from "../weapons/WarCry.js";
 import { sceneEvents } from "../../events/eventCenter.js";
 import { eventNames } from "../../events/eventNames.js";
 
@@ -17,19 +18,37 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
                 gameobject.callbackFunction(this.lastKeyboardInput, this);
             }
         });
+
+        //add the warCry group object to the scene
+        this.warCry = this.scene.physics.add.group({
+            classType: WarCry,
+            createCallback: (gameobject) => {
+                gameobject.warCryCallback();
+            }
+        });
         
         //key for swinging th axe
         this.axeKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.warCryKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         
         this.swingAxeUp = false;
         this.swingDuration = 150;
         this.swingTimer = 0;
         this.isSwinging = false;
 
-        this.axeCooldown = 2000;
+        this.axeCooldown = 2500;
         this.axeTimer = 0;
         this.maxSwingChanges = 4;
         this.swingCount = 0;
+
+        this.isShouting = false;
+        this.shoutDuration = 350;
+        this.shoutTimer = 0;
+
+        //incremented every half second
+        //linked to the half-second timer
+        this.maxShoutCharge = 30;
+        this.currentShoutCharge = 0;
 
         this.throwSpeedFast = 300;
         this.throwKnockbackFast = 100;
@@ -52,6 +71,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         this.takenDamageState = false;
         this.damageTime = 0;
         this.isDead = false;
+
+        sceneEvents.on(eventNames.halfSecondTimer, this.incrementShout, this);
+    }
+
+    preDestroy(){
+        sceneEvents.off(eventNames.halfSecondTimer, this.incrementShout, this);
     }
 
     preUpdate(time, deltaTime){
@@ -76,6 +101,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
             }
         }
 
+        //for stopping movement while using War Cry
+        if(this.isShouting){
+            this.shoutTimer += deltaTime;
+            if(this.shoutTimer >= this.shoutDuration){
+                this.isShouting = false;
+                this.shoutTimer = 0;
+            }
+        }
+
         if(this.isSwinging){
             this.swingTimer += deltaTime;
             if(this.swingTimer >= this.swingDuration){
@@ -97,7 +131,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
     update(cursors){
 
         //do nothing if can't find controls or player
-        if(!cursors || this.takenDamageState || this.isDead || this.attackingState || this.isSwinging){
+        if(!cursors || this.takenDamageState || this.isDead || this.attackingState || this.isSwinging || this.isShouting){
             return;
         }
 
@@ -138,6 +172,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
 
     manageAttacking(cursors){
         if(Phaser.Input.Keyboard.JustDown(cursors.space)){
+
             //get the direction the player is pointing
             if(cursors.left.isDown){
                 this.diectionInputHolder.left = true;
@@ -167,11 +202,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         else if(this.axeKey.isDown && this.swingCount < this.maxSwingChanges){
             this.rotatingAxes()
         }
+        else if(Phaser.Input.Keyboard.JustDown(this.warCryKey) && this.currentShoutCharge >= this.maxShoutCharge){
+            this.useWarcry();
+        }
+    }
+
+    incrementShout(){
+        if(this.currentShoutCharge < this.maxShoutCharge){
+            this.currentShoutCharge++;
+            sceneEvents.emit(eventNames.ultimateChargeChanged, (this.currentShoutCharge / this.maxShoutCharge), this);
+        }
     }
 
     rotatingAxes(){
         this.swingCount++;
-        this.axeTimer = 0;
         sceneEvents.emit(eventNames.weaponChargeChanged, this.swingCount, this);
 
         const axe = this.axes.get(this.x, this.y, "axe");
@@ -180,6 +224,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         this.swingDuration = axe.swingDuration;
         this.isSwinging = true;
         this.swingAxeUp = !this.swingAxeUp;
+    }
+
+    useWarcry(){
+        this.currentShoutCharge = 0;
+        sceneEvents.emit(eventNames.weaponChargeChanged, this.swingCount, this);
+        const shout = this.warCry.get(this.x, this.y, "black-circle");
+        this.isShouting = true;
+        this.setVelocity(0, 0);
+        this.anims.play("knight-idle", true);
     }
 
     throwKnife(){

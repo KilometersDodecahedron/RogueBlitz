@@ -2,9 +2,10 @@
 
 //used to test collision boundaries
 import debugDraw from "../utils/debug.js";
+import { testCreate, testUpdate } from "../utils/GlobalTestScript.js";
 
 //import animations stored in separate files
-import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims, createEnergyBallAnims, createZombieIceAnims, createSkeletonAnims, createZombieAnims, createOrcMaskedAnims, createDemonBigAnims, createDemonSmallAnims, createWogolAnims, createZombieBigAnims} from "../anims/enemyAnims.js";
+import { createGoblinAnims, createOgreAnims, createDemonAnims, createNecromancerAnims, createOozeSwampyAnims, createOozeMuddyAnims, createEnergyBallAnims, createZombieIceAnims, createSkeletonAnims, createZombieAnims, createOrcMaskedAnims, createDemonBigAnims, createDemonSmallAnims, createWogolAnims, createZombieBigAnims, createOrcWarriorAnims} from "../anims/enemyAnims.js";
 import { createPlayerAnims } from "../anims/playerAnims.js";
 import { createExplosionSampleAnims } from "../anims/effectAnims.js";
 
@@ -20,6 +21,7 @@ import EnemyProjectile from "../enemies/attacks/enemyProjectile.js";
 import Skeleton from "../enemies/skeleton.js";
 import Zombie from "../enemies/zombie.js";
 import OrcMasked from "../enemies/orc-masked.js";
+import OrcWarrior from "../enemies/orc-warrior.js";
 import DemonBig from "../enemies/demonBig.js";
 import DemonSmall from "../enemies/demonSmall.js";
 import Wogol from "../enemies/wogol.js";
@@ -72,6 +74,9 @@ export default class Game extends Phaser.Scene {
         this.wallCheckRaycaster
         this.playerCheckRay;
         this.wallCheckRay;
+        //set by weaponWieldingEnemyClass from their callback function
+        this.meleeRaycaster;
+        this.meleeCheckRay;
         //indexes of the tiles in the json file of the sprite sheet that are walls
         this.wallTileIndexes = [225,3,226,257,35,258,228,291,292,259,260,227,323,324];
         //store the event here that goes off every 500 milliseconds. It's more data efficient than update for timers
@@ -108,6 +113,7 @@ export default class Game extends Phaser.Scene {
         createWogolAnims(this.anims);
         createZombieBigAnims(this.anims);
         createExplosionSampleAnims(this.anims);
+        createOrcWarriorAnims(this.anims);
 
         const map = this.make.tilemap({key: 'dungeon'});
         
@@ -149,11 +155,14 @@ export default class Game extends Phaser.Scene {
         //create raycasters for shooting enemies
         this.playerCheckRaycaster = this.raycasterPlugin.createRaycaster();
         this.wallCheckRaycaster = this.raycasterPlugin.createRaycaster();
+        this.meleeRaycaster = this.raycasterPlugin.createRaycaster();
         this.playerCheckRaycaster.mapGameObjects(this.knight);
         this.wallCheckRaycaster.mapGameObjects(wallsLayer, false, {collisionTiles: this.wallTileIndexes });
+        this.meleeRaycaster.mapGameObjects(this.knight);
         //these get passed into the shooting enemies
         this.playerCheckRay = this.playerCheckRaycaster.createRay();
         this.wallCheckRay = this.wallCheckRaycaster.createRay();
+        this.meleeCheckRay = this.meleeRaycaster.createRay();
 
         //set camera area
         this.cameras.main.setBounds(0, 0, 800, 560);
@@ -342,6 +351,18 @@ export default class Game extends Phaser.Scene {
         this.enemiesTierOne.push({group: demonSmalls, name: "demon-small", spawnLayer: solidEnemySpawnPoints});
         this.enemiesTierTwo.push({group: demonSmalls, name: "demon-small", spawnLayer: solidEnemySpawnPoints});
 
+        // const orcWarriors = this.physics.add.group({
+        //     classType: OrcWarrior,
+        //     createCallback: (gameObject) => {
+        //         //set their hit boxes correctly
+        //         gameObject.body.setSize(12, 17).setOffset(2, 2);
+        //         //have them create an event when they come in collide with something 
+        //         gameObject.body.onCollide = true;
+        //         gameObject.weaponWieldingCallback(this.playerCheckRay, this.knight);
+        //     }
+        // })
+        // orcWarriors.get(200, 230, "orc-warrior");
+
         //update score when enemy is defeated
         sceneEvents.on(eventNames.enemyDefeated, this.handleEnemyDefeated, this);
         //count timer
@@ -361,6 +382,7 @@ export default class Game extends Phaser.Scene {
             sceneEvents.off(eventNames.halfSecondTimer, this.countTowardsEnemySpawn, this);
             this.scene.stop("game-ui");
             this.halfSecondTimerEvent.destroy();
+            this.meleeRaycaster = undefined;
         })
 
         //wall collision
@@ -430,10 +452,28 @@ export default class Game extends Phaser.Scene {
         this.physics.add.overlap(this.knight.axes, wogol, this.handleWeaponHit, undefined, this);
         this.physics.add.overlap(this.knight.axes, zombieBig, this.handleWeaponHit, undefined, this);
 
+        //haveWarCryEffectEnemies
+        this.physics.add.overlap(this.knight.warCry, goblins, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, ogres, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, demons, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, necromancers, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, oozeSwampy, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, oozeMuddy, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, zombieIce, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, skeletons, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, zombies, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, orcMaskeds, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, demonBigs, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, demonSmalls, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, wogol, this.handleStuningEnemies, undefined, this);
+        this.physics.add.overlap(this.knight.warCry, zombieBig, this.handleStuningEnemies, undefined, this);
+
         //enemy projectiles hit player
         this.playerEnemyCollisionArray.push(this.physics.add.collider(energyBall, this.knight, this.handleEnemyProjectileHit, undefined, this));
         
         this.spawnNewSetOfEnemies();
+
+        //testCreate(this);
     }
 
     handleWeaponHit(weapon, enemy){
@@ -453,6 +493,12 @@ export default class Game extends Phaser.Scene {
 
         enemy.takeDamage(projectile.damage, directionalVector);
         projectile.destroy();
+    }
+
+    handleStuningEnemies(stunner, enemy){
+        console.log(stunner)
+        console.log(enemy)
+        stunner.stunEnemy(enemy);
     }
 
     handleEnemyProjectileHit(player, projectile){

@@ -31,9 +31,13 @@ export default class oader extends Phaser.Scene {
         this.load.atlas("demon-big", "../assets/img/enemies/demon-big.png", "../assets/json/enemies/demon-big.json");
         this.load.atlas("wogol", "../assets/img/enemies/wogol.png", "../assets/json/enemies/wogol.json");
         this.load.atlas("zombie-big", "../assets/img/enemies/zombie-big.png", "../assets/json/enemies/zombie-big.json");
+        this.load.atlas("orc-warrior", "../assets/img/enemies/orc-warrior.png", "../assets/json/enemies/orc-warrior.json");
 
         //attacks
-        this.load.atlas("energy-ball", "../assets/img/enemies/attacks/energy_ball.png", "../assets/json/enemies/attacks/energy_ball.json")
+        this.load.atlas("energy-ball", "../assets/img/enemies/attacks/energy_ball.png", "../assets/json/enemies/attacks/energy_ball.json");
+        this.load.image("rusty-sword", "../assets/img/enemies/attacks/weapon_rusty_sword.png");
+        this.load.image("spiked-club", "../assets/img/enemies/attacks/weapon_baton_with_spikes.png");
+        this.load.image("spear", "../assets/img/enemies/attacks/weapon_spear.png");
 
         //hearts for health
         this.load.image("ui-heart-full", "../assets/img/ui/ui_heart_full.png");
@@ -47,6 +51,9 @@ export default class oader extends Phaser.Scene {
 
         //effects
         this.load.atlas("explosion-sample", "../assets/img/effects/explosion-sample.png", "../assets/json/effects/explosion-sample.json");
+        this.load.atlas("color-particles", "../assets/img/effects/colored-particles.png", "../assets/json/effects/colored-particles.json");
+        this.load.image("black-circle", "../assets/img/effects/black-circle.png")
+        this.load.image("shouting-mouth", "../assets/img/effects/shouting-mouth.png")
     }
 
     create() {
