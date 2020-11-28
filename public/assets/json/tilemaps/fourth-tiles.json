@@ -479,8 +479,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":167.818575614728,
-                 "y":411.448422304328
+                 "x":167.819,
+                 "y":411.448
                 }, 
                 {
                  "gid":254,
@@ -491,8 +491,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":471.466598717459,
-                 "y":379.597231069775
+                 "x":471.467,
+                 "y":379.597
                 }, 
                 {
                  "gid":254,
@@ -503,8 +503,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":536.443028835945,
-                 "y":203.353972905253
+                 "x":536.443,
+                 "y":203.354
                 }, 
                 {
                  "gid":254,
@@ -515,8 +515,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":248.033920417482,
-                 "y":154.771037181996
+                 "x":248.034,
+                 "y":154.771
                 }, 
                 {
                  "gid":254,
@@ -527,8 +527,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":663.885192433138,
-                 "y":122.970645792564
+                 "x":663.885,
+                 "y":122.971
                 }, 
                 {
                  "gid":254,
@@ -539,8 +539,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":632.900195694716,
-                 "y":412.4357469015
+                 "x":632.9,
+                 "y":412.436
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -8694,6 +8694,19 @@
                          "value":false
                         }]
                 }],
+         "tilewidth":16
+        }, 
+        {
+         "columns":3,
+         "firstgid":1025,
+         "image":"..\/..\/..\/..\/..\/..\/Dino-Dynasty\/public\/platformer\/assets\/img\/tilesets\/Tiles dungeon.png",
+         "imageheight":64,
+         "imagewidth":48,
+         "margin":0,
+         "name":"A-Tileset",
+         "spacing":0,
+         "tilecount":12,
+         "tileheight":16,
          "tilewidth":16
         }],
  "tilewidth":16,

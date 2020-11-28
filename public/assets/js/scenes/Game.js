@@ -78,7 +78,7 @@ export default class Game extends Phaser.Scene {
         this.meleeRaycaster;
         this.meleeCheckRay;
         //indexes of the tiles in the json file of the sprite sheet that are walls
-        this.wallTileIndexes = [225,3,226,257,35,258,228,291,292,259,260,227,323,324];
+        this.wallTileIndexes = [257,35,258,228,291,292,259,260,323,324];
         //store the event here that goes off every 500 milliseconds. It's more data efficient than update for timers
         this.halfSecondTimerEvent = Phaser.Time.TimerEvent;
     }
