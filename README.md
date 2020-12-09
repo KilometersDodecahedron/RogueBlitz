@@ -86,7 +86,9 @@ run node server.js or nodomon
 Try the game here ==> [RogueBlitz](https://rogueblitzgaming.herokuapp.com/)
 
 # Screenshots📸
-![RogueBlitz](https://user-images.githubusercontent.com/62157127/95813318-9adab280-0ce5-11eb-82b9-4bb629b42d1f.png)
+![RogueBlitz](https://user-images.githubusercontent.com/62157127/101557304-bdf2ad00-398a-11eb-9849-9beabb548e6d.png)
+
+
 
 # Contributors🙌👨‍💻
 
