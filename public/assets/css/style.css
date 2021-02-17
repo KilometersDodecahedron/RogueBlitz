@@ -16,7 +16,8 @@ body {
 
 header {
     text-align: center;
-   
+    border-color: bisque;
+    min-height: 704px;
 }
 
 .jumbotron {
